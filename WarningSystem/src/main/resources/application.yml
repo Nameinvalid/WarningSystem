@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/warningsystem?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+
+server:
+  port: 8080
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.Ice.WarningSystem.bean
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*Mapper.xml
+  global-config:
+    db-config:
+      #逻辑未删除值，（逻辑删除下有效）
+      logic-delete-value: 1
+      #逻辑未删除值，（逻辑删除下有效）需要注入逻辑策略LogicSqlInjector，以@Bean方式注      入
+      logic-not-delete-value: 0
+  type-aliases-package: com.Ice.WarningSystem.bean

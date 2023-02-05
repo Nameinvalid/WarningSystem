@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Ice.WarningSystem.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.Ice.WarningSystem.bean.User">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+    </resultMap>
+    <select id="findAll" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select *
+        from selectLogin
+        where username=#{username,jdbcType=VARCHAR}
+    </select>
+</mapper>
