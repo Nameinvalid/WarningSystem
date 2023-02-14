@@ -13,7 +13,7 @@
               <el-input v-model="loginForm.password" placeholder="请输入密码" prefix-icon="key" show-password/>
             </el-form-item>
             <el-button type="primary" class="selectLogin-button" @click="selectLogin">登录</el-button>
-            <el-button class="add-button" type="info" @click="addUser">注册</el-button>
+            <el-button class="insert-button" type="info" @click="insertUser">注册</el-button>
           </el-form>
         </div>
       </el-card>
@@ -33,9 +33,7 @@ const loginForm =reactive({
     username: '',
     password: '',
 })
-const userMenu =reactive({
 
-})
 const selectLogin=async()=>{
     let res=await loginApi(loginForm)
     if(res.data!==null && res.code===200){
@@ -44,18 +42,18 @@ const selectLogin=async()=>{
         type:'success'
       })
       sessionStorage.setItem("login",res.data)
-      let resMenu= await selectMenuAPI()
+      router.push('/Index')
+      /*let resMenu= await selectMenuAPI()
       if(resMenu.data!==null&&resMenu.code===200){
         sessionStorage.setItem("menu",res.data)
       }
-      console.log(res.data)
       router.push('/Index')
     }else {
       ElMessage(res.code)
       router.push('/')
-    }
-}
-const addUser=async ()=>{
+    }*/
+}}
+const insertUser=async ()=>{
   router.push('/insertUser')
 }
 
@@ -86,7 +84,7 @@ onMounted(() => {
 .selectLogin-button{
   margin-left: 13vh;
 }
-.add-button{
+.insert-button{
   margin-left: 8vh;
 }
 .box-card {
