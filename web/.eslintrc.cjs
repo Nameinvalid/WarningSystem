@@ -17,5 +17,7 @@ module.exports = {
         "vue"
     ],
     "rules": {
+        // 关闭名称校验
+        'vue/multi-word-component-names': "off"
     }
 }
