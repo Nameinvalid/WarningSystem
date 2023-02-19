@@ -11,11 +11,11 @@
 	</parent>
 	<groupId>com.Ice</groupId>
 	<artifactId>WarningSystem</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>WarningSystem</name>
-	<description>Demo project for Spring Boot</description>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<properties>
-		<java.version>8</java.version>
+		<maven.compiler.source>8</maven.compiler.source>
+		<maven.compiler.target>8</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -23,16 +23,10 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>2.2.2</version>
-		</dependency>
-		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-boot-starter</artifactId>
-			<version>3.4.0</version>
+			<version>3.4.2</version>
 		</dependency>
-
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -77,6 +71,11 @@
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>2.0.1.Final</version>
+		</dependency>
+		<!-- 引入aop支持 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 
 		<dependency>

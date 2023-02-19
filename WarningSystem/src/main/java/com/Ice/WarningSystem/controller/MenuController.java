@@ -39,7 +39,7 @@ public class MenuController {
                 return ResultUtils.error(InsertMenuIsSuccess.INSERT_ERROR_UNKNOWN.getMsg());
             }
         }catch (Exception e){
-            System.out.println(e);
+            log.error(e.toString());
             return ResultUtils.error(InsertMenuIsSuccess.INSERT_ERROR_EXCEPTION.getMsg());
         }
     }
