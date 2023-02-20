@@ -21,35 +21,35 @@
           </el-menu-item>
           <el-sub-menu index="3">
             <template #title>
-              <el-icon><Location /></el-icon>
+              <el-icon><Menu /></el-icon>
               <span>系统管理</span>
             </template>
             <el-menu-item index="1-1" @click="selectUser">
-              <el-icon><Location /></el-icon>
+              <el-icon><UserFilled /></el-icon>
               <span>用户管理</span>
             </el-menu-item>
-            <el-menu-item index="1-2">
-              <el-icon><Location /></el-icon>
+            <el-menu-item index="1-2" @click="selectRole">
+              <el-icon><Avatar /></el-icon>
               <span>角色管理</span>
             </el-menu-item>
-            <el-menu-item index="1-3">
-              <el-icon><Location /></el-icon>
+            <el-menu-item index="1-3" @click="selectMenu">
+              <el-icon><Tickets /></el-icon>
               <span>菜单管理</span>
             </el-menu-item>
           </el-sub-menu>
-          <el-menu-item index="4">
+          <el-menu-item index="4" @click="selectPicture">
             <el-icon><PictureFilled /></el-icon>
             <template #title>覆冰图片管理</template>
           </el-menu-item>
-          <el-menu-item index="5">
+          <el-menu-item index="5" @click="selectWarningLevel">
             <el-icon><Odometer /></el-icon>
             <template #title>预警等级管理</template>
           </el-menu-item>
-          <el-menu-item index="6">
+          <el-menu-item index="6" @click="selectWeather">
             <el-icon><Drizzling /></el-icon>
             <template #title>气象数据管理</template>
           </el-menu-item>
-          <el-menu-item index="7">
+          <el-menu-item index="7" @click="selectMapIceCity">
             <el-icon><IceCream/></el-icon>
             <template #title>城市覆冰分布图</template>
           </el-menu-item>
@@ -83,7 +83,30 @@ const router = useRouter()
 const isCollapse = ref(false)
 
 const selectUser = async () => {
-  router.push("/User")
+  router.push("/user")
+}
+
+const selectRole = async () => {
+  router.push("/role")
+}
+
+const selectMenu = async () => {
+  router.push("/menu")
+}
+
+const selectPicture = async () => {
+  router.push("/picture")
+}
+
+const selectWarningLevel = async () => {
+  router.push("/warningLevel")
+}
+const selectWeather= async () => {
+  router.push("/weather")
+}
+
+const selectMapIceCity = async () => {
+  router.push("/mapIceCity")
 }
 
 const selectIndex = async () => {

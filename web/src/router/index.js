@@ -35,16 +35,86 @@ const routes=[
         redirect:'/System',
         children: [
             {
-                path: '/User',
+                path: '/user',
                 name:'user',
                 component:()=>import('@/view/system/User.vue'),
                 meta: {
                     name:'用户管理',
                     icon:'User'
                 }
-            }
+            },
+            {
+                path: '/role',
+                name:'role',
+                component:()=>import('@/view/system/Role.vue'),
+                meta: {
+                    name:'角色管理',
+                    icon:'User'
+                }
+            },
+            {
+                path: '/menu',
+                name:'menu',
+                component:()=>import('@/view/system/Menu.vue'),
+                meta: {
+                    name:'菜单管理',
+                    icon:'User'
+                }
+            },
         ]
-    }
+    },
+    {
+        path: '/Index',
+        component:Layout,
+        children: [{
+            path: '/picture',
+            name:'picture',
+            component: ()=>import ('@/view/picture/Picture.vue'),
+            meta:{
+                name:'覆冰图片管理',
+                icon:'house'
+            }
+        }]
+    },
+    {
+        path: '/Index',
+        component:Layout,
+        children: [{
+            path:'/warningLevel',
+            name:'warningLevel',
+            component: ()=>import ('@/view/warninglevel/WarningLevel.vue'),
+            meta:{
+                name:'预警等级管理',
+                icon:'house'
+            }
+        }]
+    },
+    {
+        path: '/Index',
+        component:Layout,
+        children: [{
+            path:'/weather',
+            name:'weather',
+            component: ()=>import ('@/view/weather/Weather.vue'),
+            meta:{
+                name:'气象数据管理',
+                icon:'house'
+            }
+        }]
+    },
+    {
+        path: '/Index',
+        component:Layout,
+        children: [{
+            path:'/mapIceCity',
+            name:'MapIceCity',
+            component: ()=>import ('@/view/mapicecity/MapIceCity.vue'),
+            meta:{
+                name:'城市覆冰分布图',
+                icon:'house'
+            }
+        }]
+    },
 ]
 
 /**
