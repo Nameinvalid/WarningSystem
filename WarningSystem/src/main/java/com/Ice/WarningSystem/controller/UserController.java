@@ -71,7 +71,6 @@ public class UserController {
                 return ResultUtils.error(InsertUserIsSuccess.INSERT_ERROR_UNKNOWN.getMsg());
             }
         }catch (Exception e){
-            System.out.println(e);
             return ResultUtils.error(InsertUserIsSuccess.INSERT_ERROR_EXCEPTION.getMsg());
         }
     }
@@ -92,7 +91,6 @@ public class UserController {
                 return ResultUtils.error(UpdateUserIsSuccess.UPDATE_ERROR_UNKNOWN.getMsg());
             }
         }catch (Exception e){
-            System.out.println(e);
             return ResultUtils.error(UpdateUserIsSuccess.UPDATE_ERROR_EXCEPTION.getMsg());
         }
     }
@@ -112,13 +110,13 @@ public class UserController {
                 return ResultUtils.success(DeleteUserIsSuccess.DELETE_ERROR_UNKNOWN.getMsg());
             }
         }catch (Exception e){
-            System.out.println(e);
             return ResultUtils.success(DeleteUserIsSuccess.DELETE_ERROR_EXCEPTION.getMsg());
         }
     }
 
-    @GetMapping("/findIPageUser")
-    public HttpResult findIPageUser(SelectUserPageForm pageForm){
+    @PostMapping("/findIPageUser")
+    @ApiOperation(value = "用户分页查询")
+    public HttpResult findIPageUser(@RequestBody SelectUserPageForm pageForm){
         try{
             IPage<User> page=userService.findIPageUser(pageForm);
             if (page.getSize()==0){
@@ -127,7 +125,6 @@ public class UserController {
                 return HttpResult.ok("查询成功",page);
             }
         }catch (Exception e){
-            System.out.println(e);
             return HttpResult.error(HttpStatus.SC_INTERNAL_SERVER_ERROR,"未知异常，请联系管理员",e);
         }
     }

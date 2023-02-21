@@ -136,17 +136,8 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotBlank(selectUserPageForm.getName())){
             wrapper.like(User::getName,selectUserPageForm.getName());
         }
-        if(StringUtils.isNotBlank(selectUserPageForm.getUsername())){
-            wrapper.like(User::getUsername,selectUserPageForm.getUsername());
-        }
         if(selectUserPageForm.getPhone()!=null){
             wrapper.like(User::getPhone,selectUserPageForm.getPhone());
-        }
-        if(selectUserPageForm.getType()!=null){
-            wrapper.eq(User::getType,selectUserPageForm.getType());
-        }
-        if(selectUserPageForm.getSex()!=null){
-            wrapper.eq(User::getSex,selectUserPageForm.getSex());
         }
         wrapper.orderByAsc(User::getCreateTime);
         page=userDao.selectPage(page,wrapper);

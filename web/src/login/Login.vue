@@ -25,7 +25,6 @@ import { reactive,onMounted } from 'vue';
 import { loginApi } from "../api/login.js";
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import {selectMenuAPI} from "../api/menu.js";
 
 const router = useRouter()
 
