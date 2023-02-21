@@ -3,7 +3,6 @@
  */
 import axios from "axios"
 import config from "@/http/config"
-import qs from 'qs'
 import { ElMessage } from "element-plus";
 //axios配置
 const instance=axios.create({
@@ -107,6 +106,6 @@ export function put(url,params){
     return instance.put(url,params);
 }
 
-export function Delete(url){
-    return instance.delete(url);
+export function Delete(url,params){
+    return instance.delete(url,params);
 }

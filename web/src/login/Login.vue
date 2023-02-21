@@ -40,7 +40,7 @@ const selectLogin=async()=>{
         message:res.msg,
         type:'success'
       })
-      sessionStorage.setItem("login",res.data)
+      sessionStorage.setItem("loginUser",res.data.id)
       router.push('/Index')
       /*let resMenu= await selectMenuAPI()
       if(resMenu.data!==null&&resMenu.code===200){

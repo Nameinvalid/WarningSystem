@@ -97,8 +97,9 @@ public class UserController {
 
     @ApiOperation(value = "删除用户信息")
     @DeleteMapping("/deleteUser")
-    public HttpResultRewrite<?> deleteUser(@RequestBody @Validated DeleteUserForm deleteUserForm){
+    public HttpResultRewrite<?> deleteUser(@RequestBody DeleteUserForm deleteUserForm){
         try{
+            System.out.println(deleteUserForm);
             int isSuccess= userService.deleteUser(deleteUserForm);
             if(isSuccess== DeleteUserIsSuccess.DELETE_USER_IS_ERROR.getCode()){
                 return ResultUtils.error(DeleteUserIsSuccess.DELETE_USER_IS_ERROR.getMsg());

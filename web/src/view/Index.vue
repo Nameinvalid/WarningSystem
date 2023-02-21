@@ -110,7 +110,6 @@ const selectMapIceCity = async () => {
 }
 
 const selectIndex = async () => {
-  console.log(sessionStorage.getItem("login"))
   router.push("/Index")
 }
 onMounted(() => {
