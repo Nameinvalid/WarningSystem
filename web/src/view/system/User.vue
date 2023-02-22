@@ -39,7 +39,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <InsertUser ref="insertRef"></InsertUser>
+    <InsertUser ref="insertRef" @refresh="refresh"></InsertUser>
   </el-main>
 </template>
 
@@ -95,6 +95,10 @@ const deleteBtn = async (row) => {
     //删除成功后，进行刷新
     await getUserList()
   }
+}
+//刷新列表
+const refresh = () => {
+  getUserList()
 }
 
 const resetBtn = async () => {

@@ -1,7 +1,7 @@
 <template>
   <el-dialog :model-value="dialog.visible" :title="dialog.title" width="30%"
              :before-close="onClose" append-to-body :close-on-click-modal="false">
-      <el-form :model="updateUserForm" label-width="80px" size="default">
+      <el-form :model="updateUserForm" ref="userForm" label-width="80px" size="default" >
         <el-row>
           <el-col :span="12">
             <el-form-item prop="name" label="姓名">
@@ -53,25 +53,29 @@
 </template>
 
 <script setup>
-import {nextTick, reactive} from "vue";
+import {nextTick, reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import useInstance from "../../hooks/useInstance.js";
 
 const { global } = useInstance()
 //所有的参数
+const userForm=ref()
 const dialog = reactive({
   visible:false,
   title:'标题'
 })
 //修改包装类
-let updateUserForm=reactive({
+const updateUserForm=reactive({
   username:'',
   password:'',
   phone:0,
-  sex:0,
-  type:0,
-  name:''
+  sex:3,
+  type:3,
+  name:'',
+  userId:0,//
+  updateUserId:0
 })
+const updateUserId=sessionStorage.getItem("loginUser")
 //展示函数，将弹框展示出来
 const onShow = () => {
   dialog.visible=true
@@ -83,26 +87,48 @@ const onClose = () => {
 //信息修改完成或者新增信息完成，对所有的属性进行提交
 const onConfirm = () => {
   //写需要提交给后台的属性，分清是修改还是新增
-  dialog.visible=false
+  userForm.value?.validate(async (avid)=>{
+    if (avid){
+      updateUserForm.updateUserId=updateUserId
+      emits('refresh')
+      onClose()
+    }
+  })
 }
 //加载父组件传过来的参数，并把弹窗打开
 const show = async (row) => {
   if (row){
     ElMessage({
-      message:"进行修改",
+      message:"对"+row.name+"进行修改",
+      type:'success'
+    })
+    //父组件传过来的参数
+    //不能添加await，添加了await之后userForm.value?.resetFields()就不会生效，算是一个时机问题
+    nextTick(() => {
+      global.$objCopy(row,updateUserForm)
+      //如果是修改的话，会有一个userId，新增的时候，userId会是0
+      updateUserForm.userId=row.id
+    })
+  }else {
+    ElMessage({
+      message:"新增用户",
       type:'success'
     })
   }
-  //父组件传过来的参数
-  await nextTick(() => {
-    global.$objCopy(row,updateUserForm)
-  })
+  userForm.value?.resetFields()
+  //由于表单中有几个数据消不掉，所以另外加上
+  updateUserForm.password='';
+  updateUserForm.username='';
+  updateUserForm.userId=0;
   onShow()
 }
 //暴露出show函数给父组件使用
 defineExpose({
   show
 })
+
+//注册事件
+const emits = defineEmits(['refresh'])
 
 
 </script>
