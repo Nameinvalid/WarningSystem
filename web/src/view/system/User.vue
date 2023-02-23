@@ -14,7 +14,7 @@
       </el-form-item>
     </el-form>
     <!-- 表格内容 -->
-    <el-table :data="tableList.list" border stripe >
+    <el-table :data="tableList.list" border stripe :height="tableHeight">
       <el-table-column prop="name" label="姓名"></el-table-column>
       <el-table-column prop="username" label="用户名"></el-table-column>
       <el-table-column prop="phone" label="电话"></el-table-column>
@@ -41,20 +41,38 @@
     </el-table>
     <InsertUser ref="insertRef" @refresh="refresh"></InsertUser>
   </el-main>
+  <!-- 分页 -->
+  <el-pagination @size-change="sizeChange" @current-change="currentChange" :current-page="userList.pageNum"
+                 :page-sizes="[5, 10, 40, 80, 100]" :page-size="userList.pageSize"
+                 layout="total, sizes, prev, pager, next, jumper" :total="userList.total" background
+  >
+  </el-pagination>
 </template>
 
 <script setup>
-import {onMounted, reactive, ref} from "vue";
+import {nextTick, onMounted, reactive, ref} from "vue";
 import {selectUserApi,deleteUserApi} from "../../api/user.js";
 import {Search,Refresh,Plus,Edit,Delete} from '@element-plus/icons-vue';
 import InsertUser from "./InsertUser.vue";
 import {ElMessage} from "element-plus";
+
+
+//sizeChange
+const sizeChange = (size) => {
+  userList.pageSize=size;
+  getUserList()
+}
+const currentChange = (page) => {
+  userList.pageNum=page
+  getUserList()
+}
 //查询包装类
 const  userList= reactive({
   phone:'',
   name:'',
   pageNum:1,
-  pageSize:20
+  pageSize:5,
+  total:0
 })
 //删除包装类
 const deleteUserForm = reactive({
@@ -116,11 +134,17 @@ const getUserList = async (string) => {
       })
     }
     tableList.list=res.data.records
+    userList.total=res.data.total
   }
 }
+//表格高度
+const tableHeight=ref(0)
 
 onMounted(()=>{
   getUserList()
+  nextTick(()=>{
+    tableHeight.value=window.innerHeight-230
+  })
 })
 </script>
 

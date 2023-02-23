@@ -95,7 +95,6 @@ const onConfirm = () => {
       if (updateUserForm.userId===0){
         //新增
         res=await insertUserApi(updateUserForm)
-        console.log(updateUserForm)
       }else {
         //修改
         res= await updateUserApi(updateUserForm)
