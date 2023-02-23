@@ -55,11 +55,14 @@ public class UserServiceImpl implements UserService {
                 //如果id是空的或者插入的行数是0的话，说明没插入进去，直接返回0：插入失败
                 return 0;
             }else {
-                user.setCreateUserId(userId);
-                user.setUpdateUserId(userId);
                 LambdaUpdateWrapper<User> wrapper=new LambdaUpdateWrapper<>();
-                wrapper.eq(User::getId,userId).set(User::getCreateUserId,userId)
-                        .set(User::getUpdateUserId,userId);
+                if (insertUserContent.getUpdateUserId()==0){
+                    wrapper.eq(User::getId,userId).set(User::getCreateUserId,userId)
+                            .set(User::getUpdateUserId,userId);
+                }else {
+                    wrapper.eq(User::getId,userId).set(User::getCreateUserId,insertUserContent.getUpdateUserId())
+                            .set(User::getUpdateUserId,insertUserContent.getUpdateUserId());
+                }
                 int countId= userDao.update(null,wrapper);
                 if(countId==1){
                     //等于1说明插入成功，并且修改成功后面的创建者id和修改者id都已经同步

@@ -52,9 +52,9 @@ const userForm = reactive({
 })
 const insertUser = async () => {
   if (userForm.sex==='男'){
-    userForm.sex='1';
+    userForm.sex=1;
   }else if(userForm.sex==='女'){
-    userForm.sex='0'
+    userForm.sex=0
   }
   let res=await insertUserApi(userForm)
   if(res||res===200){

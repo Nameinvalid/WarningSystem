@@ -56,6 +56,7 @@
 import {nextTick, reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import useInstance from "../../hooks/useInstance.js";
+import {insertUserApi, updateUserApi} from "../../api/user.js";
 
 const { global } = useInstance()
 //所有的参数
@@ -72,7 +73,7 @@ const updateUserForm=reactive({
   sex:3,
   type:3,
   name:'',
-  userId:0,//
+  userId:0,//判断是新增还是修改
   updateUserId:0
 })
 const updateUserId=sessionStorage.getItem("loginUser")
@@ -89,9 +90,21 @@ const onConfirm = () => {
   //写需要提交给后台的属性，分清是修改还是新增
   userForm.value?.validate(async (avid)=>{
     if (avid){
+      let res=null
       updateUserForm.updateUserId=updateUserId
-      emits('refresh')
-      onClose()
+      if (updateUserForm.userId===0){
+        //新增
+        res=await insertUserApi(updateUserForm)
+        console.log(updateUserForm)
+      }else {
+        //修改
+        res= await updateUserApi(updateUserForm)
+      }
+      if (res &&res.code===200){
+        ElMessage.success(res.msg)
+        emits('refresh')
+        onClose()
+      }
     }
   })
 }
@@ -108,12 +121,14 @@ const show = async (row) => {
       global.$objCopy(row,updateUserForm)
       //如果是修改的话，会有一个userId，新增的时候，userId会是0
       updateUserForm.userId=row.id
+      dialog.title='修改'
     })
   }else {
     ElMessage({
       message:"新增用户",
       type:'success'
     })
+    dialog.title='新增'
   }
   userForm.value?.resetFields()
   //由于表单中有几个数据消不掉，所以另外加上

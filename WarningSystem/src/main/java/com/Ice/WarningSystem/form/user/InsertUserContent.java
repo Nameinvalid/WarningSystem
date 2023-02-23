@@ -18,6 +18,8 @@ public class InsertUserContent {
     private String name;
     @ApiModelProperty(value = "用户性别",required = true,example = "男")
     private Integer sex;
+    @ApiModelProperty(value = "添加者id",example = "111111111")
+    private Long updateUserId;
 
     public String getUsername() {
         return username;
@@ -59,6 +61,14 @@ public class InsertUserContent {
         this.name = name;
     }
 
+    public Long getUpdateUserId() {
+        return updateUserId;
+    }
+
+    public void setUpdateUserId(Long updateUserId) {
+        this.updateUserId = updateUserId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,6 +90,7 @@ public class InsertUserContent {
                 ", phone=" + phone +
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
+                ", updateUserId=" + updateUserId +
                 '}';
     }
 }

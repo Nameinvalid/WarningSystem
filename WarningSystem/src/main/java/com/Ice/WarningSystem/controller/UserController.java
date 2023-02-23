@@ -60,6 +60,7 @@ public class UserController {
     public HttpResultRewrite<?> insertUser(@RequestBody @Validated InsertUserContent insertUserContent){
         try{
             int isSuccess=userService.insertUser(insertUserContent);
+            System.out.println(insertUserContent);
             //InsertUserIsSuccess,里面有枚举类的错误码和错误信息，根据错误码获得相应的错误信息
             if(isSuccess==InsertUserIsSuccess.INSERT_USER_IS_ERROR.getCode()){
                 return ResultUtils.error(InsertUserIsSuccess.INSERT_USER_IS_ERROR.getMsg());
@@ -76,7 +77,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "更改用户信息")
-    @PostMapping("/updateUser")
+    @PutMapping("/updateUser")
     public HttpResultRewrite<?> updateUser(@RequestBody @Validated UpdateUserForm userForm){
         try{
             int isSuccess= userService.updateUser(userForm);
