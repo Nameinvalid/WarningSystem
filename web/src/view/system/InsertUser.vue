@@ -31,17 +31,19 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12" v-if="updateUserForm.type ===1">
             <el-form-item prop="username" label="账户">
               <el-input v-model="updateUserForm.username"></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="12" v-if="updateUserForm.type===1">
+            <el-form-item prop="password" label="密码">
+              <el-input v-model="updateUserForm.password"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
-        <el-col :span="12" v-if="updateUserForm.type===1">
-          <el-form-item prop="password" label="密码">
-            <el-input v-model="updateUserForm.password"></el-input>
-          </el-form-item>
-        </el-col>
       </el-form>
       <template #footer>
       <span class="dialog-footer">
