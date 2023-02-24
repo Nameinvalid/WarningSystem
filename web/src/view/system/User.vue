@@ -39,14 +39,14 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination @size-change="sizeChange" @current-change="currentChange" :current-page="userList.pageNum"
+                   :page-sizes="[5, 10, 40, 80, 100]" :page-size="userList.pageSize"
+                   layout="total, sizes, prev, pager, next, jumper" :total="userList.total" background
+    >
+    </el-pagination>
     <InsertUser ref="insertRef" @refresh="refresh"></InsertUser>
   </el-main>
   <!-- 分页 -->
-  <el-pagination @size-change="sizeChange" @current-change="currentChange" :current-page="userList.pageNum"
-                 :page-sizes="[5, 10, 40, 80, 100]" :page-size="userList.pageSize"
-                 layout="total, sizes, prev, pager, next, jumper" :total="userList.total" background
-  >
-  </el-pagination>
 </template>
 
 <script setup>

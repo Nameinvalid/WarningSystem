@@ -5,7 +5,7 @@ export const insertRoleApi = (params) => {
 }
 
 export const selectRoleApi=(params)=>{
-    return post('/role/findIPageRole',params)
+    return post('/role/findRolePage',params)
 }
 
 export const updateRoleApi=(params)=>{

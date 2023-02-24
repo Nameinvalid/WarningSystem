@@ -31,6 +31,11 @@ public class Role {
     @TableField(value = "remark")
     private String remark;
     /**
+     * 角色描述
+     */
+    @TableField(value = "type")
+    private Integer type;
+    /**
      * 角色创建时间
      */
     @TableField(value = "create_time")
@@ -79,6 +84,14 @@ public class Role {
         this.remark = remark;
     }
 
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -117,6 +130,7 @@ public class Role {
                 "id=" + id +
                 ", roleName='" + roleName + '\'' +
                 ", remark='" + remark + '\'' +
+                ", type=" + type +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", createUserId=" + createUserId +

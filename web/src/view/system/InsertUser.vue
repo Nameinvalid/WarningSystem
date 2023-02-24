@@ -113,7 +113,7 @@ const onConfirm = () => {
 const show = async (row) => {
   if (row){
     ElMessage({
-      message:"对"+row.name+"进行修改",
+      message:"对 "+row.name+" 账号进行修改",
       type:'success'
     })
     //父组件传过来的参数

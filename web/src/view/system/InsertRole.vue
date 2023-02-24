@@ -59,7 +59,7 @@ const roleForm=ref()
 const show = async (row) => {
   if (row){
     ElMessage({
-      message:"对"+row.name+"进行修改",
+      message:"对 "+row.roleName+" 角色进行修改",
       type:'success'
     })
     //父组件传过来的参数
@@ -120,6 +120,41 @@ defineExpose({
 const emits = defineEmits(['refresh'])
 </script>
 
-<style scoped>
+<style lang="scss" scope>
+.el-dialog {
+  border-top-left-radius: 7px !important;
+  border-top-right-radius: 7px !important;
 
+.el-dialog__header {
+  margin-right: 0;
+  border-top-left-radius: 7px !important;
+  border-top-right-radius: 7px !important;
+  background-color: #009688 !important;
+
+.el-dialog__title {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+}
+
+.el-dialog__headerbtn {
+
+.el-dialog__close {
+  color: #fff;
+}
+
+}
+
+.el-dialog__body {
+  padding: 10px;
+}
+
+.el-dialog__footer {
+  border-top: 1px solid #e8eaec !important;
+  padding: 10px;
+}
+
+}
 </style>

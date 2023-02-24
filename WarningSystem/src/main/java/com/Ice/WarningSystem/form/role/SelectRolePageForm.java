@@ -3,14 +3,16 @@ package com.Ice.WarningSystem.form.role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(description = "前端添加角色")
-public class InsertRoleForm {
+@ApiModel(description = "前端分页查询角色实体类")
+public class SelectRolePageForm {
     @ApiModelProperty(value = "角色名称")
     private String roleName;
-    @ApiModelProperty(value = "角色描述")
+    @ApiModelProperty(value = "描述")
     private String remark;
-    @ApiModelProperty(value = "添加者id",example = "111111111")
-    private Long updateUserId;
+    @ApiModelProperty(value = "页数",example = "1")
+    private Long pageNum;
+    @ApiModelProperty(value = "大小",example = "20")
+    private Long pageSize;
 
     public String getRoleName() {
         return roleName;
@@ -28,20 +30,29 @@ public class InsertRoleForm {
         this.remark = remark;
     }
 
-    public void setUpdateUserId(Long updateUserId) {
-        this.updateUserId = updateUserId;
+    public Long getPageNum() {
+        return pageNum;
     }
 
-    public Long getUpdateUserId() {
-        return updateUserId;
+    public void setPageNum(Long pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public Long getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Long pageSize) {
+        this.pageSize = pageSize;
     }
 
     @Override
     public String toString() {
-        return "InsertRoleForm{" +
+        return "SelectRolePageForm{" +
                 "roleName='" + roleName + '\'' +
                 ", remark='" + remark + '\'' +
-                ", updateUserId=" + updateUserId +
+                ", pageNum=" + pageNum +
+                ", pageSize=" + pageSize +
                 '}';
     }
 }
