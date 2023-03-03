@@ -17,6 +17,8 @@ public class InsertMenuForm {
     private Integer menuGrade;
     @ApiModelProperty(value = "角色id")
     private Long roleId;
+    @ApiModelProperty(value = "创建用户id")
+    private Long updateUserId;
 
     public String getParentMenuName() {
         return parentMenuName;
@@ -66,6 +68,14 @@ public class InsertMenuForm {
         this.parentMenuId = parentMenuId;
     }
 
+    public Long getUpdateUserId() {
+        return updateUserId;
+    }
+
+    public void setUpdateUserId(Long updateUserId) {
+        this.updateUserId = updateUserId;
+    }
+
     @Override
     public String toString() {
         return "InsertMenuForm{" +
@@ -73,7 +83,9 @@ public class InsertMenuForm {
                 ", parentMenuId=" + parentMenuId +
                 ", menuName='" + menuName + '\'' +
                 ", createUserId=" + createUserId +
+                ", menuGrade=" + menuGrade +
                 ", roleId=" + roleId +
+                ", updateUserId=" + updateUserId +
                 '}';
     }
 }

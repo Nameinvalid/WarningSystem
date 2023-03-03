@@ -1,10 +1,15 @@
 package com.Ice.WarningSystem.controller;
 
+import com.Ice.WarningSystem.bean.Menu;
 import com.Ice.WarningSystem.enums.menu.InsertMenuIsSuccess;
 import com.Ice.WarningSystem.form.menu.InsertMenuForm;
+import com.Ice.WarningSystem.form.menu.SelectMenuPageForm;
+import com.Ice.WarningSystem.http.HttpResult;
 import com.Ice.WarningSystem.http.HttpResultRewrite;
+import com.Ice.WarningSystem.http.HttpStatus;
 import com.Ice.WarningSystem.http.ResultUtils;
 import com.Ice.WarningSystem.service.MenuService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +44,23 @@ public class MenuController {
                 return ResultUtils.error(InsertMenuIsSuccess.INSERT_ERROR_UNKNOWN.getMsg());
             }
         }catch (Exception e){
-            log.error(e.toString());
             return ResultUtils.error(InsertMenuIsSuccess.INSERT_ERROR_EXCEPTION.getMsg());
         }
+    }
+
+    @ApiOperation(value = "菜单分页查询")
+    @PostMapping("/findMenuPage")
+    public HttpResult findIPageMenu(@RequestBody SelectMenuPageForm pageForm){
+        try{
+            IPage<Menu> page= menuService.findMenuPage(pageForm);
+            if (page.getSize()==0){
+                return HttpResult.ok("无结果",page);
+            }else {
+                return HttpResult.ok("查询成功",page);
+            }
+        }catch (Exception e){
+            return HttpResult.error(HttpStatus.SC_INTERNAL_SERVER_ERROR,"未知异常，请联系管理员",e);
+        }
+
     }
 }

@@ -32,7 +32,7 @@ public class RoleController {
 
     @PostMapping("/findRolePage")
     @ApiOperation(value = "角色分页查询")
-    public HttpResult findIPageUser(@RequestBody SelectRolePageForm pageForm){
+    public HttpResult findIPageRole(@RequestBody SelectRolePageForm pageForm){
         try{
             IPage<Role> page=roleService.findRolePage(pageForm);
             if (page.getSize()==0){

@@ -10,6 +10,29 @@
         <el-button type="primary" @click="insertBtn" :icon="Plus">新增</el-button>
       </el-form-item>
     </el-form>
+    <el-table :data="tableList.list" border stripe :height="tableHeight">
+      <el-table-column prop="parentMenuName" label="父级菜单名">
+        <template #default="scope">
+          <el-tag v-if="null===scope.row.parentMenuName || ''===scope.row.parentMenuName" type="success" size="default">无</el-tag>
+          <el-tag v-else>{{scope.row.parentMenuName}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="menuName" label="菜单名"></el-table-column>
+      <el-table-column prop="menuIndex" label="菜单序号"></el-table-column>
+      <el-table-column prop="menuGrade" label="菜单等级">
+        <template #default="scope">
+          <el-tag type="success" size="default">{{scope.row.menuGrade}}级菜单</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="220">
+        <template #default="scope">
+          <el-button type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)" >编辑
+          </el-button>
+          <el-button type="danger" :icon="Delete" size="default" @click="deleteBtn(scope.row)">删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <el-pagination @size-change="sizeChange" @current-change="currentChange" :current-page="menuList.pageNum"
                    :page-sizes="[1,5, 10, 40, 80, 100]" :page-size="menuList.pageSize"
                    layout="total, sizes, prev, pager, next, jumper" :total="menuList.total" background
@@ -22,10 +45,11 @@
 <script setup>
 
 import {nextTick, onMounted, reactive, ref} from "vue";
-import {Search,Refresh,Plus} from '@element-plus/icons-vue';
+import {Search,Refresh,Plus,Edit,Delete} from '@element-plus/icons-vue';
 import InsertMenu from "./InsertMenu.vue";
 import {selectMenuAPI} from "../../api/menu.js";
 import {ElMessage} from "element-plus";
+import {deleteMenuAPI} from "../../api/menu";
 
 //sizeChange
 const sizeChange = (size) => {
@@ -39,10 +63,40 @@ const currentChange = (page) => {
 
 const menuList = reactive({
   menuName:'',
+  menuGrade:'',
   pageNum:1,
   pageSize:5,
   total:0
 })
+//删除包装类
+const deleteMenuForm = reactive({
+  deleteUserId:0,
+  menuId:0
+})
+const indexToString = (index) => {
+  switch (index) {
+    case 1:
+      return '一'
+    case 2:
+      return '二';
+    case 3:
+      return '三';
+    case 4:
+      return '四';
+  }
+}
+const stringToIndex = (str) => {
+  switch (str){
+    case '一':
+      return 1;
+    case '二':
+      return 2;
+    case '三':
+      return 3;
+    case '四':
+      return 4;
+  }
+}
 //登录者id
 const updateUserId=sessionStorage.getItem("loginUser")
 //后端返回的包装类
@@ -55,6 +109,26 @@ const insertRef=ref();
 const insertBtn = () => {
   insertRef.value.show()
 }
+//编辑按钮
+const editBtn = async (row) => {
+  //编辑的时候弹出新增框
+  row.menuGrade=stringToIndex(row.menuGrade)
+  insertRef.value.show(row)
+}
+const deleteBtn = async (row) => {
+  deleteMenuForm.deleteUserId=updateUserId;
+  deleteMenuForm.menuId=row.id;
+  //调用删除用户api
+  let res=await deleteMenuAPI(deleteMenuForm);
+  if (res &&res.code===200){
+    ElMessage({
+      message:res.msg,
+      type:'success'
+    })
+    //删除成功后，进行刷新
+    await getMenuList()
+  }
+}
 const getMenuList= async (string)=> {
   let res= await selectMenuAPI(menuList)
   if (res && res.code===200){
@@ -64,8 +138,12 @@ const getMenuList= async (string)=> {
         type:'success'
       })
     }
-    tableList.list=res.data.appRecords
+    tableList.list=res.data.records
     menuList.total=res.data.total
+    console.log(tableList.list)
+    for (let i = 0; i < tableList.list.length; i++) {
+      tableList.list[i].menuGrade=indexToString(tableList.list[i].menuGrade);
+    }
   }
 }
 

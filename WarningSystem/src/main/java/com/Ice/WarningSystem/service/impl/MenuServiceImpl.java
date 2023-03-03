@@ -3,9 +3,13 @@ package com.Ice.WarningSystem.service.impl;
 import com.Ice.WarningSystem.bean.Menu;
 import com.Ice.WarningSystem.dao.MenuDao;
 import com.Ice.WarningSystem.form.menu.InsertMenuForm;
+import com.Ice.WarningSystem.form.menu.SelectMenuPageForm;
 import com.Ice.WarningSystem.mapper.MenuMapper;
 import com.Ice.WarningSystem.service.MenuService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -41,8 +45,8 @@ public class MenuServiceImpl implements MenuService {
         menu.setMenuName(insertMenuForm.getMenuName());
         menu.setCreateTime(new Date());
         menu.setUpdateTime(new Date());
-        menu.setCreateUserId(insertMenuForm.getCreateUserId());
-        menu.setUpdateUserId(insertMenuForm.getCreateUserId());
+        menu.setCreateUserId(insertMenuForm.getUpdateUserId());
+        menu.setUpdateUserId(insertMenuForm.getUpdateUserId());
         if (insertMenuForm.getMenuGrade()==1){
             //根据菜单等级，说明是一级菜单
             //查询相应的级别菜单最大值，然后+1
@@ -59,7 +63,22 @@ public class MenuServiceImpl implements MenuService {
         }
         System.out.println(menu);
         //菜单参数添加完成后，进行添加
-        menuDao.insert(menu);
+        //menuDao.insert(menu);
         return 0;
+    }
+
+    @Override
+    public IPage<Menu> findMenuPage(SelectMenuPageForm pageForm) {
+        Page<Menu> page=new Page<>(pageForm.getPageNum(),pageForm.getPageSize());
+        LambdaQueryWrapper<Menu> wrapper=new LambdaQueryWrapper<>();
+        if (StringUtils.isNotBlank(pageForm.getMenuName())){
+            wrapper.like(Menu::getMenuName,pageForm.getMenuName());
+        }
+        if (pageForm.getMenuGrade()!=null){
+            wrapper.eq(Menu::getMenuGrade,pageForm.getMenuGrade());
+        }
+        wrapper.orderByAsc(Menu::getMenuGrade);
+        page=menuDao.selectPage(page,wrapper);
+        return page;
     }
 }
