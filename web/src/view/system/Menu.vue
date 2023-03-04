@@ -85,18 +85,7 @@ const indexToString = (index) => {
       return '四';
   }
 }
-const stringToIndex = (str) => {
-  switch (str){
-    case '一':
-      return 1;
-    case '二':
-      return 2;
-    case '三':
-      return 3;
-    case '四':
-      return 4;
-  }
-}
+
 //登录者id
 const updateUserId=sessionStorage.getItem("loginUser")
 //后端返回的包装类
@@ -112,7 +101,6 @@ const insertBtn = () => {
 //编辑按钮
 const editBtn = async (row) => {
   //编辑的时候弹出新增框
-  row.menuGrade=stringToIndex(row.menuGrade)
   insertRef.value.show(row)
 }
 const deleteBtn = async (row) => {
@@ -140,7 +128,6 @@ const getMenuList= async (string)=> {
     }
     tableList.list=res.data.records
     menuList.total=res.data.total
-    console.log(tableList.list)
     for (let i = 0; i < tableList.list.length; i++) {
       tableList.list[i].menuGrade=indexToString(tableList.list[i].menuGrade);
     }
