@@ -15,10 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(value = "MenuController",tags = "菜单管理控制层")
 @RestController
@@ -61,6 +58,11 @@ public class MenuController {
         }catch (Exception e){
             return HttpResult.error(HttpStatus.SC_INTERNAL_SERVER_ERROR,"未知异常，请联系管理员",e);
         }
-
+    }
+    @ApiOperation(value = "查询父级菜单")
+    @GetMapping("/findParentMenu/{menuIndex}")
+    public HttpResult findParentMenu(@PathVariable Integer menuIndex){
+        //查询父级菜单
+        return HttpResult.ok(menuService.findMenuList(menuIndex));
     }
 }

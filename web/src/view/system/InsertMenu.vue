@@ -23,14 +23,27 @@
       </el-row>
       <el-row>
         <el-col :span="12">
+          <el-form-item prop="parentMenuGrade" label="父级菜单级别">
+            <el-select v-model="parentMenuGrade" filterable clearable placeholder="父级菜单级别">
+              <el-option
+                  v-for="item in menuGradeList"
+                  :key="item.index"
+                  :label="item.value"
+                  :value="item.index"
+                  @click="getParentMenu(item.index)"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item prop="parentMenuName" label="父级菜单名字">
             <el-select v-model="updateMenuForm.parentMenuName" filterable clearable placeholder="父级菜单名字">
               <el-option
                   v-for="item in parentMenuList.parentMenu"
-                  :key="item.parentMenuId"
+                  :key="item.bId"
                   :label="item.parentMenuName"
                   :value="item.parentMenuName"
-                  @click="getParentMenuId(item.parentMenuId)"
+                  @click="getParentMenuId(item.bId)"
               />
             </el-select>
           </el-form-item>
@@ -49,9 +62,9 @@
 <script setup>
 
 import useInstance from "../../hooks/useInstance.js";
-import {nextTick, reactive, ref} from "vue";
+import {nextTick, onMounted, reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
-import {insertMenuAPI, updateMenuAPI} from "../../api/menu.js";
+import {insertMenuAPI, selectParentMenuAPI, updateMenuAPI} from "../../api/menu.js";
 
 const { global } = useInstance()
 const dialog = reactive({
@@ -133,11 +146,17 @@ const menuGradeList=[{
   },]
 //存放父级菜单
 const parentMenuList= reactive({
-  parentMenu:[{
-    parentMenuName: '首页',
-    parentMenuId: '11111111111',
-  },]
+  parentMenu:[]
 })
+const parentMenuGrade=ref('');
+const getParentMenu = async (index) => {
+  updateMenuForm.parentMenuId=0
+  let res=await selectParentMenuAPI(index)
+  console.log(res)
+  if (res && res.code===200){
+    parentMenuList.parentMenu=res.data
+  }
+}
 const onConfirm = () => {
   //写需要提交给后台的属性，分清是修改还是新增
   menuForm.value?.validate(async (avid)=>{
@@ -177,6 +196,10 @@ defineExpose({
 
 //注册事件
 const emits = defineEmits(['refresh'])
+
+onMounted(()=>{
+
+})
 </script>
 
 <style lang="scss" scope>

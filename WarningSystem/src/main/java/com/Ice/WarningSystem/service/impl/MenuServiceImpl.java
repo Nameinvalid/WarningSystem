@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class MenuServiceImpl implements MenuService {
@@ -80,5 +81,13 @@ public class MenuServiceImpl implements MenuService {
         wrapper.orderByAsc(Menu::getMenuGrade);
         page=menuDao.selectPage(page,wrapper);
         return page;
+    }
+
+    @Override
+    public List<Menu> findMenuList(Integer menuIndex) {
+        LambdaQueryWrapper<Menu> wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(Menu::getMenuGrade,menuIndex);
+        wrapper.orderByAsc(Menu::getbId);
+        return menuDao.selectList(wrapper);
     }
 }

@@ -5,6 +5,8 @@ import com.Ice.WarningSystem.form.menu.InsertMenuForm;
 import com.Ice.WarningSystem.form.menu.SelectMenuPageForm;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
+import java.util.List;
+
 public interface MenuService {
     int insertMenu(InsertMenuForm insertMenuForm);
 
@@ -12,5 +14,6 @@ public interface MenuService {
 
     IPage<Menu> findMenuPage(SelectMenuPageForm pageForm);
 
+    List<Menu> findMenuList(Integer menuIndex);
 
 }
