@@ -24,7 +24,20 @@
       <el-row>
         <el-col :span="12">
           <el-form-item prop="parentMenuGrade" label="父级菜单级别">
-            <el-select v-model="parentMenuGrade" filterable clearable placeholder="父级菜单级别">
+            <el-select v-model="updateMenuForm.parentMenuGrade"
+                       v-if="dialog.title==='修改' && updateMenuForm.menuGrade===1"
+                       disabled filterable clearable placeholder="父级菜单级别">
+              <el-option
+                  v-for="item in menuGradeList"
+                  :key="item.index"
+                  :label="item.value"
+                  :value="item.index"
+                  @click="getParentMenu(item.index)"
+              />
+            </el-select>
+            <el-select v-model="updateMenuForm.parentMenuGrade"
+                       v-else
+                       filterable clearable placeholder="父级菜单级别">
               <el-option
                   v-for="item in menuGradeList"
                   :key="item.index"
@@ -76,6 +89,7 @@ const updateMenuForm =reactive({
   parentMenuName:'',
   parentMenuId:0,
   menuGrade:'',
+  parentMenuGrade:'',
   menuId:0,//判断是新增还是修改
   updateUserId:0,
 })
@@ -148,7 +162,6 @@ const menuGradeList=[{
 const parentMenuList= reactive({
   parentMenu:[]
 })
-const parentMenuGrade=ref('');
 const getParentMenu = async (index) => {
   updateMenuForm.parentMenuId=0
   let res=await selectParentMenuAPI(index)
