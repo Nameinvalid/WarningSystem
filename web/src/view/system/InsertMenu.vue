@@ -25,15 +25,8 @@
         <el-col :span="12">
           <el-form-item prop="parentMenuGrade" label="父级菜单级别">
             <el-select v-model="updateMenuForm.parentMenuGrade"
-                       v-if="dialog.title==='修改' && updateMenuForm.menuGrade===1"
+                       v-if="updateMenuForm.menuGrade===1"
                        disabled filterable clearable placeholder="父级菜单级别">
-              <el-option
-                  v-for="item in menuGradeList"
-                  :key="item.index"
-                  :label="item.value"
-                  :value="item.index"
-                  @click="getParentMenu(item.index)"
-              />
             </el-select>
             <el-select v-model="updateMenuForm.parentMenuGrade"
                        v-else
@@ -50,13 +43,15 @@
         </el-col>
         <el-col :span="12">
           <el-form-item prop="parentMenuName" label="父级菜单名字">
-            <el-select v-model="updateMenuForm.parentMenuName" filterable clearable placeholder="父级菜单名字">
+            <el-select v-model="updateMenuForm.parentMenuName" v-if="updateMenuForm.menuGrade===1" disabled filterable clearable placeholder="父级菜单名字">
+            </el-select>
+            <el-select v-model="updateMenuForm.parentMenuName" v-else filterable clearable placeholder="父级菜单名字">
               <el-option
                   v-for="item in parentMenuList.parentMenu"
-                  :key="item.bId"
-                  :label="item.parentMenuName"
-                  :value="item.parentMenuName"
-                  @click="getParentMenuId(item.bId)"
+                  :key="item.id"
+                  :label="item.menuName"
+                  :value="item.menuName"
+                  @click="getParentMenuId(item.id)"
               />
             </el-select>
           </el-form-item>
@@ -125,6 +120,9 @@ const show = async (row) => {
       updateMenuForm.menuId=row.id
       updateMenuForm.parentMenuId=row.bId
       updateMenuForm.menuGrade=stringToIndex(row.menuGrade)
+      if (row.menuGrade!==1){
+        updateMenuForm.parentMenuGrade=stringToIndex(row.menuGrade)-1;
+      }
       dialog.title='修改'
     })
   }else {
@@ -164,8 +162,8 @@ const parentMenuList= reactive({
 })
 const getParentMenu = async (index) => {
   updateMenuForm.parentMenuId=0
+  updateMenuForm.parentMenuName='';
   let res=await selectParentMenuAPI(index)
-  console.log(res)
   if (res && res.code===200){
     parentMenuList.parentMenu=res.data
   }
@@ -178,12 +176,10 @@ const onConfirm = () => {
       updateMenuForm.updateUserId=updateUserId
       if (updateMenuForm.menuId===0){
         //新增
-        //res=await insertMenuAPI(updateMenuForm)
-        console.log("新增",updateMenuForm)
+        res=await insertMenuAPI(updateMenuForm)
       }else {
         //修改
-        console.log("修改",updateMenuForm)
-        //res= await updateMenuAPI(updateMenuForm)
+        res= await updateMenuAPI(updateMenuForm)
       }
       if (res &&res.code===200){
         ElMessage.success(res.msg)

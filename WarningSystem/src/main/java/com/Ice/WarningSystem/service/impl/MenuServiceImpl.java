@@ -2,11 +2,14 @@ package com.Ice.WarningSystem.service.impl;
 
 import com.Ice.WarningSystem.bean.Menu;
 import com.Ice.WarningSystem.dao.MenuDao;
+import com.Ice.WarningSystem.form.menu.DeleteMenuForm;
 import com.Ice.WarningSystem.form.menu.InsertMenuForm;
 import com.Ice.WarningSystem.form.menu.SelectMenuPageForm;
+import com.Ice.WarningSystem.form.menu.UpdateMenuForm;
 import com.Ice.WarningSystem.mapper.MenuMapper;
 import com.Ice.WarningSystem.service.MenuService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -41,7 +44,6 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public int insertMenu(InsertMenuForm insertMenuForm) {
-        System.out.println(insertMenuForm);
         Menu menu=new Menu();
         menu.setMenuName(insertMenuForm.getMenuName());
         menu.setCreateTime(new Date());
@@ -62,10 +64,8 @@ public class MenuServiceImpl implements MenuService {
             menu.setParentMenuName(insertMenuForm.getParentMenuName());
             menu.setMenuGrade(insertMenuForm.getMenuGrade());
         }
-        System.out.println(menu);
         //菜单参数添加完成后，进行添加
-        //menuDao.insert(menu);
-        return 0;
+        return menuDao.insert(menu);
     }
 
     @Override
@@ -89,5 +89,54 @@ public class MenuServiceImpl implements MenuService {
         wrapper.eq(Menu::getMenuGrade,menuIndex);
         wrapper.orderByAsc(Menu::getbId);
         return menuDao.selectList(wrapper);
+    }
+
+    @Override
+    public int updateMenu(UpdateMenuForm menuForm) {
+        Menu menu=new Menu();
+        menu.setMenuName(menuForm.getMenuName());
+        menu.setMenuGrade(menuForm.getMenuGrade());
+        menu.setParentMenuName(menuForm.getParentMenuName());
+        menu.setbId(menuForm.getParentMenuId());
+        menu.setUpdateUserId(menuForm.getUpdateUserId());
+        menu.setUpdateTime(new Date());
+        LambdaUpdateWrapper<Menu> wrapper=new LambdaUpdateWrapper<>();
+        wrapper.eq(Menu::getId,menuForm.getMenuId());
+        int count=menuDao.update(menu,wrapper);
+        if(count==0){
+            //相当于没有修改成功，也就是没有被修改人的id，或者是sql发生错误
+            return 0;
+        }else if(count==1){
+            //相当于修改成功了
+            return 1;
+        }else if(count>1){
+            //修改行数多了，证明被修改人id重复，数据库中有脏数据
+            return 2;
+        }else {
+            //发生未知错误
+            return -1;
+        }
+    }
+
+    @Override
+    public int deleteMenu(DeleteMenuForm menuForm) {
+        LambdaUpdateWrapper<Menu> wrapper=new LambdaUpdateWrapper<>();
+        wrapper.eq(Menu::getId,menuForm.getMenuId()).set(Menu::getType,0)
+                .set(Menu::getUpdateUserId,menuForm.getDeleteUserId())
+                .set(Menu::getUpdateTime,new Date());
+        int count=menuDao.update(null, wrapper);
+        if(count==0){
+            //相当于没有修改成功，也就是没有用户的id，或者是sql发生错误
+            return 0;
+        }else if(count==1){
+            //相当于修改成功了
+            return 1;
+        }else if(count>1){
+            //修改行数多了，证明被修改人id重复，数据库中有脏数据
+            return 2;
+        }else {
+            //发生未知错误
+            return -1;
+        }
     }
 }

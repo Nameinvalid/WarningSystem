@@ -1,9 +1,13 @@
 package com.Ice.WarningSystem.controller;
 
 import com.Ice.WarningSystem.bean.Menu;
+import com.Ice.WarningSystem.enums.menu.DeleteMenuIsSuccess;
 import com.Ice.WarningSystem.enums.menu.InsertMenuIsSuccess;
+import com.Ice.WarningSystem.enums.menu.UpdateMenuIsSuccess;
+import com.Ice.WarningSystem.form.menu.DeleteMenuForm;
 import com.Ice.WarningSystem.form.menu.InsertMenuForm;
 import com.Ice.WarningSystem.form.menu.SelectMenuPageForm;
+import com.Ice.WarningSystem.form.menu.UpdateMenuForm;
 import com.Ice.WarningSystem.http.HttpResult;
 import com.Ice.WarningSystem.http.HttpResultRewrite;
 import com.Ice.WarningSystem.http.HttpStatus;
@@ -64,5 +68,43 @@ public class MenuController {
     public HttpResult findParentMenu(@PathVariable Integer menuIndex){
         //查询父级菜单
         return HttpResult.ok(menuService.findMenuList(menuIndex));
+    }
+
+    @ApiOperation(value = "修改菜单")
+    @PutMapping("/updateMenu")
+    public HttpResult updateMenu(@RequestBody UpdateMenuForm menuForm){
+        try{
+            int isSuccess= menuService.updateMenu(menuForm);
+            if (isSuccess==UpdateMenuIsSuccess.UPDATE_MENU_IS_ERROR.getCode()){
+                return HttpResult.error(UpdateMenuIsSuccess.UPDATE_MENU_IS_ERROR.getMsg());
+            }else if (isSuccess==UpdateMenuIsSuccess.UPDATE_MENU_IS_SUCCESS.getCode()){
+                return HttpResult.ok(UpdateMenuIsSuccess.UPDATE_MENU_IS_SUCCESS.getMsg());
+            }else if (isSuccess==UpdateMenuIsSuccess.UPDATE_MENU_IS_ERROR_ID_REPETITION.getCode()){
+                return HttpResult.error(UpdateMenuIsSuccess.UPDATE_MENU_IS_ERROR_ID_REPETITION.getMsg());
+            }else {
+                return HttpResult.error(UpdateMenuIsSuccess.UPDATE_ERROR_UNKNOWN.getMsg());
+            }
+        }catch (Exception e){
+            return HttpResult.error(UpdateMenuIsSuccess.UPDATE_ERROR_EXCEPTION.getMsg());
+        }
+    }
+
+    @ApiOperation(value = "删除菜单")
+    @DeleteMapping("/deleteMenu")
+    public HttpResult deleteMenu(@RequestBody @Validated DeleteMenuForm menuForm){
+        try{
+            int isSuccess= menuService.deleteMenu(menuForm);
+            if (isSuccess==DeleteMenuIsSuccess.DELETE_MENU_IS_ERROR.getCode()){
+                return HttpResult.error(DeleteMenuIsSuccess.DELETE_MENU_IS_ERROR.getMsg());
+            }else if (isSuccess==DeleteMenuIsSuccess.DELETE_MENU_IS_SUCCESS.getCode()){
+                return HttpResult.ok(DeleteMenuIsSuccess.DELETE_MENU_IS_SUCCESS.getMsg());
+            }else if (isSuccess==DeleteMenuIsSuccess.DELETE_MENU_IS_ERROR_ID_REPETITION.getCode()){
+                return HttpResult.error(DeleteMenuIsSuccess.DELETE_MENU_IS_ERROR_ID_REPETITION.getMsg());
+            }else {
+                return HttpResult.error(DeleteMenuIsSuccess.DELETE_ERROR_UNKNOWN.getMsg());
+            }
+        }catch (Exception e){
+            return HttpResult.error(DeleteMenuIsSuccess.DELETE_ERROR_EXCEPTION.getMsg());
+        }
     }
 }

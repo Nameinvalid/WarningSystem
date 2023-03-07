@@ -9,6 +9,8 @@ public class SelectMenuPageForm {
     private String menuName;
     @ApiModelProperty(value = "菜单等级")
     private Integer menuGrade;
+    @ApiModelProperty(value = "菜单状态")
+    private Integer type;
     @ApiModelProperty(value = "页数",example = "1")
     private Long pageNum;
     @ApiModelProperty(value = "大小",example = "20")
@@ -24,6 +26,14 @@ public class SelectMenuPageForm {
 
     public Integer getMenuGrade() {
         return menuGrade;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getType() {
+        return type;
     }
 
     public void setMenuGrade(Integer menuGrade) {
@@ -51,6 +61,7 @@ public class SelectMenuPageForm {
         return "SelectMenuPageForm{" +
                 "menuName='" + menuName + '\'' +
                 ", menuGrade=" + menuGrade +
+                ", type=" + type +
                 ", pageNum=" + pageNum +
                 ", pageSize=" + pageSize +
                 '}';

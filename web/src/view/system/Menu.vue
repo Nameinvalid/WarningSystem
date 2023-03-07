@@ -24,6 +24,12 @@
           <el-tag type="success" size="default">{{scope.row.menuGrade}}级菜单</el-tag>
         </template>
       </el-table-column>
+      <el-table-column prop="type" label="状态">
+        <template #default="scope">
+          <el-tag v-if="scope.row.type === 1" type="success" size="default">启用</el-tag>
+          <el-tag v-if="scope.row.type === 0" type="danger" size="default">禁用</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" width="220">
         <template #default="scope">
           <el-button type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)" >编辑
@@ -132,6 +138,7 @@ const getMenuList= async (string)=> {
       tableList.list[i].menuGrade=indexToString(tableList.list[i].menuGrade);
     }
   }
+  console.log(tableList.list)
 }
 
 const searchBtn = async () => {

@@ -7,7 +7,7 @@ export const insertMenuAPI = (params) => {
   return post("/menu/insertMenu",params)
 }
 export const deleteMenuAPI = (params) => {
-  return Delete("/menu/deleteMenu",params)
+  return Delete("/menu/deleteMenu",{data:params})
 }
 
 export const updateMenuAPI=(params)=>{

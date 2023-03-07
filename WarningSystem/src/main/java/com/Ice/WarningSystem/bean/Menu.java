@@ -44,6 +44,11 @@ public class Menu {
     @TableField(value = "menu_grade")
     private Integer menuGrade;
     /**
+     * 菜单状态：1：启用，0：弃用
+     */
+    @TableField(value = "type")
+    private Integer type;
+    /**
      * 菜单创建时间
      */
     @TableField(value = "create_time")
@@ -98,6 +103,14 @@ public class Menu {
 
     public Integer getMenuGrade() {
         return menuGrade;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getType() {
+        return type;
     }
 
     public String getParentMenuName() {
@@ -157,6 +170,7 @@ public class Menu {
                 ", parentMenuName='" + parentMenuName + '\'' +
                 ", menuIndex=" + menuIndex +
                 ", menuGrade=" + menuGrade +
+                ", type=" + type +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", createUserId=" + createUserId +
