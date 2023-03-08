@@ -82,10 +82,12 @@
           <el-tab-pane
               v-for="item in editableTabs"
               :key="item.name"
-              :label="item.title"
               :name="item.name"
           >
-            <el-breadcrumb-item :to="{ path: '/' }">{{item.title}}</el-breadcrumb-item>
+            <template #label>
+              <el-breadcrumb-item :to="{ path: '/' }">{{item.title}}</el-breadcrumb-item>
+            </template>
+
           </el-tab-pane>
         </el-tabs>
         <el-main>
