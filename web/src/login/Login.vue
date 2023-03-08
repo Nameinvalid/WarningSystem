@@ -40,6 +40,11 @@ const selectLogin=async()=>{
         message:res.msg,
         type:'success'
       })
+      ElMessage({
+        message:"欢迎"+res.data.username+"使用本系统",
+        type:'success'
+      })
+      sessionStorage.setItem("username",res.data.username)
       sessionStorage.setItem("loginUser",res.data.id)
       router.push('/Index')
       /*let resMenu= await selectMenuAPI()

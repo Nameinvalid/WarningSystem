@@ -138,7 +138,6 @@ const getMenuList= async (string)=> {
       tableList.list[i].menuGrade=indexToString(tableList.list[i].menuGrade);
     }
   }
-  console.log(tableList.list)
 }
 
 const searchBtn = async () => {
@@ -158,11 +157,13 @@ const tableHeight = ref(0)
 onMounted(()=>{
   getMenuList()
   nextTick(()=>{
-    tableHeight.value=window.innerHeight-230
+    tableHeight.value=window.innerHeight-279
   })
 })
 </script>
 
 <style scoped>
-
+.example-showcase .el-loading-mask {
+  z-index: 9;
+}
 </style>

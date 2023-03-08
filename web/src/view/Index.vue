@@ -15,7 +15,7 @@
               配电线路覆冰监测系统
             </template>
           </el-menu-item>
-          <el-menu-item index="2" @click="selectIndex">
+          <el-menu-item index="2" @click="selectIndex('首页')">
             <el-icon><House /></el-icon>
             <template #title>首页</template>
           </el-menu-item>
@@ -24,32 +24,32 @@
               <el-icon><Menu /></el-icon>
               <span>系统管理</span>
             </template>
-            <el-menu-item index="1-1" @click="selectUser">
+            <el-menu-item index="1-1" @click="selectUser('用户管理')">
               <el-icon><UserFilled /></el-icon>
               <span>用户管理</span>
             </el-menu-item>
-            <el-menu-item index="1-2" @click="selectRole">
+            <el-menu-item index="1-2" @click="selectRole('角色管理')">
               <el-icon><Avatar /></el-icon>
               <span>角色管理</span>
             </el-menu-item>
-            <el-menu-item index="1-3" @click="selectMenu">
+            <el-menu-item index="1-3" @click="selectMenu('菜单管理')">
               <el-icon><Tickets /></el-icon>
               <span>菜单管理</span>
             </el-menu-item>
           </el-sub-menu>
-          <el-menu-item index="4" @click="selectPicture">
+          <el-menu-item index="4" @click="selectPicture('覆冰图片管理')">
             <el-icon><PictureFilled /></el-icon>
             <template #title>覆冰图片管理</template>
           </el-menu-item>
-          <el-menu-item index="5" @click="selectWarningLevel">
+          <el-menu-item index="5" @click="selectWarningLevel('预警等级管理')">
             <el-icon><Odometer /></el-icon>
             <template #title>预警等级管理</template>
           </el-menu-item>
-          <el-menu-item index="6" @click="selectWeather">
+          <el-menu-item index="6" @click="selectWeather('气象数据管理')">
             <el-icon><Drizzling /></el-icon>
             <template #title>气象数据管理</template>
           </el-menu-item>
-          <el-menu-item index="7" @click="selectMapIceCity">
+          <el-menu-item index="7" @click="selectMapIceCity('城市覆冰分布图')">
             <el-icon><IceCream/></el-icon>
             <template #title>城市覆冰分布图</template>
           </el-menu-item>
@@ -62,7 +62,34 @@
               <component :is="isCollapse ?  Expand:Fold"></component>
             </el-icon>
           </el-row>
+          <h1>{{ user.username }}</h1>
+          <el-tooltip class="box-item" effect="dark" placement="bottom">
+            <template #content>
+              <a href="#" class="exit" @click="exitLogin">退出登录</a>
+            </template>
+            <!--：src=显示本地图片的-->
+            <el-avatar size="large" :src="image" shape="circle" fit="fill">
+            </el-avatar>
+          </el-tooltip>
         </el-header>
+        <el-tabs
+            v-model="editableTabsValue"
+            type="card"
+            class="demo-tabs"
+            closable
+            @tab-remove="removeTab"
+        >
+          <el-tab-pane
+              v-for="item in editableTabs"
+              :key="item.name"
+              :label="item.title"
+              :name="item.name"
+              @click="()=>{
+                router.push('/user')
+              }"
+          >
+          </el-tab-pane>
+        </el-tabs>
         <el-main>
           <Main></Main>
         </el-main>
@@ -73,7 +100,8 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import {onMounted, ref} from 'vue';
+import {onMounted, reactive, ref} from 'vue';
+import image from '@/images/首页背景图片.jpg';
 
 import { Expand, Fold } from '@element-plus/icons-vue'
 import Main from "./main/Main.vue";
@@ -82,42 +110,89 @@ const router = useRouter()
 
 const isCollapse = ref(false)
 
-const selectUser = async () => {
+const user=reactive({
+  username:''
+})
+
+const exitLogin = async () => {
+  sessionStorage.clear();
+  router.push("/")
+}
+const selectUser = async (targetName) => {
   router.push("/user")
+  addTab(targetName)
 }
 
-const selectRole = async () => {
+const selectRole = async (targetName) => {
   router.push("/role")
+  addTab(targetName)
 }
 
-const selectMenu = async () => {
+const selectMenu = async (targetName) => {
   router.push("/menu")
+  addTab(targetName)
 }
 
-const selectPicture = async () => {
+const selectPicture = async (targetName) => {
   router.push("/picture")
+  addTab(targetName)
 }
 
-const selectWarningLevel = async () => {
+const selectWarningLevel = async (targetName) => {
   router.push("/warningLevel")
+  addTab(targetName)
 }
-const selectWeather= async () => {
+const selectWeather= async (targetName) => {
   router.push("/weather")
+  addTab(targetName)
 }
 
-const selectMapIceCity = async () => {
+const selectMapIceCity = async (targetName) => {
   router.push("/mapIceCity")
+  addTab(targetName)
 }
 
-const selectIndex = async () => {
+const selectIndex = async (targetName) => {
   router.push("/Index")
+  addTab(targetName)
 }
 onMounted(() => {
-
+  user.username=sessionStorage.getItem("username")
 })
+const editableTabs = ref([{
+  title: '首页',
+  name: '1',
+  path:'/Index'
+},]);
+const addTab = (targetName) => {
+  const newTabName = `${++tabIndex}`
+  editableTabs.value.push({
+    title: targetName,
+    name: newTabName,
+  })
+  editableTabsValue.value = newTabName
+}
+let tabIndex = 1
+const editableTabsValue = ref('1')
+const removeTab = (targetName) => {
+  const tabs = editableTabs.value
+  let activeName = editableTabsValue.value
+  if (activeName === targetName) {
+    tabs.forEach((tab, index) => {
+      if (tab.name === targetName) {
+        const nextTab = tabs[index + 1] || tabs[index - 1]
+        if (nextTab) {
+          activeName = nextTab.name
+        }
+      }
+    })
+  }
+  editableTabsValue.value = activeName
+  editableTabs.value = tabs.filter((tab) => tab.name !== targetName)
+}
 </script>
 
-<style scoped>
+<style lang="scss" scope>
 .common-layout{
   height: 100vh;
   display: flex;
@@ -144,5 +219,13 @@ onMounted(() => {
 }
 .el-menu-vertical-demo{
   border-right: solid 1px #545c64;
+}
+
+.exit {
+  text-decoration: none;
+  color: white;
+  line-height: 100%;
+  height: 100%;
+  width: 100%;
 }
 </style>
