@@ -84,10 +84,8 @@
               :key="item.name"
               :label="item.title"
               :name="item.name"
-              @click="()=>{
-                router.push('/user')
-              }"
           >
+            <el-breadcrumb-item :to="{ path: '/' }">{{item.title}}</el-breadcrumb-item>
           </el-tab-pane>
         </el-tabs>
         <el-main>
