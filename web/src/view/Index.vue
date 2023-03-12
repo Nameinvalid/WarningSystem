@@ -72,24 +72,25 @@
             </el-avatar>
           </el-tooltip>
         </el-header>
-        <el-tabs
-            v-model="editableTabsValue"
-            type="card"
-            class="demo-tabs"
-            closable
-            @tab-remove="removeTab"
-        >
-          <el-tab-pane
-              v-for="item in editableTabs"
-              :key="item.name"
-              :name="item.name"
+        <el-breadcrumb separator="">
+          <el-tabs
+              v-model="editableTabsValue"
+              type="card"
+              class="demo-tabs"
+              closable
+              @tab-remove="removeTab"
           >
-            <template #label>
-              <el-breadcrumb-item :to="{ path: '/' }">{{item.title}}</el-breadcrumb-item>
-            </template>
-
-          </el-tab-pane>
-        </el-tabs>
+            <el-tab-pane
+                v-for="item in editableTabs"
+                :key="item.name"
+                :name="item.name"
+            >
+              <template #label>
+                  <el-breadcrumb-item class="item-text" :to="{ path: item.path }">{{item.title}}</el-breadcrumb-item>
+              </template>
+            </el-tab-pane>
+          </el-tabs>
+        </el-breadcrumb>
         <el-main>
           <Main></Main>
         </el-main>
@@ -158,19 +159,32 @@ const selectIndex = async (targetName) => {
 }
 onMounted(() => {
   user.username=sessionStorage.getItem("username")
+  routers.router=router.options.routes
 })
 const editableTabs = ref([{
   title: '首页',
   name: '1',
   path:'/Index'
 },]);
+const routers=reactive({
+  router:[]
+})
 const addTab = (targetName) => {
   const newTabName = `${++tabIndex}`
-  editableTabs.value.push({
-    title: targetName,
-    name: newTabName,
-  })
   editableTabsValue.value = newTabName
+  routers.router.map((key)=>{
+    if (key.children!==undefined){
+      key.children.forEach((array)=>{
+        if (targetName===array.meta.name){
+          editableTabs.value.push({
+            title: targetName,
+            name: newTabName,
+            path: array.path
+          })
+        }
+      })
+    }
+  })
 }
 let tabIndex = 1
 const editableTabsValue = ref('1')
@@ -183,6 +197,7 @@ const removeTab = (targetName) => {
         const nextTab = tabs[index + 1] || tabs[index - 1]
         if (nextTab) {
           activeName = nextTab.name
+          router.push(nextTab.path)
         }
       }
     })
@@ -196,6 +211,10 @@ const removeTab = (targetName) => {
 .common-layout{
   height: 100vh;
   display: flex;
+}
+.item-text{
+  margin-left: 10px;
+  tab-size: 15px;
 }
 .el-header{
   display: flex;
