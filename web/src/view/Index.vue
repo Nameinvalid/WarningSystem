@@ -239,6 +239,10 @@ const removeTab = (targetName) => {
 .el-menu-vertical-demo{
   border-right: solid 1px #545c64;
 }
+h1 {
+  margin-left: 1300px;
+  margin-right: 20px;
+}
 
 .exit {
   text-decoration: none;
