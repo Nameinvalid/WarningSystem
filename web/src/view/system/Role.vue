@@ -104,14 +104,19 @@ const refresh = () => {
 }
 const resetBtn =  async () => {
   roleList.roleName=''
-  await getRoleList()
+  await getRoleList("重置成功")
 }
 const getRoleList = async (string) => {
   let res=await selectRoleApi(roleList)
   if (res && res.code===200){
-    if (typeof string != 'undefined'){
+    if (typeof string !== "undefined"){
       ElMessage({
         message:string,
+        type:'success'
+      })
+    }else {
+      ElMessage({
+        message:'查询成功',
         type:'success'
       })
     }

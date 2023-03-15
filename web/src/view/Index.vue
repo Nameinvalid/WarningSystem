@@ -86,7 +86,7 @@
                 :name="item.name"
             >
               <template #label>
-                  <el-breadcrumb-item class="item-text" :to="{ path: item.path }">{{item.title}}</el-breadcrumb-item>
+                  <el-breadcrumb-item :replace="true" class="item-text" :to="{ path: item.path }">{{item.title}}</el-breadcrumb-item>
               </template>
             </el-tab-pane>
           </el-tabs>
