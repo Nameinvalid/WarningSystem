@@ -4,6 +4,10 @@ spring:
     url: jdbc:mysql://localhost:3306/warningsystem?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: 123456
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 100MB
 
 
 server:
@@ -13,3 +17,11 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
   mapper-locations: classpath:mapper/*Mapper.xml
+
+
+qiniu:
+  accessKey: jwve7fWAAWvq5Q-ycNvFKO35dr8tM3O0Hnon_rfJ
+  secretKey: LX9K9n2iI9AHsI4x0Aln8UHe0Tqw_s4VovL23bza
+  bucketName: mywarningsystem
+  path: rrlur42f4.hn-bkt.clouddn.com
+

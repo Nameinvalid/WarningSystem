@@ -1,6 +1,7 @@
 package com.Ice.WarningSystem.controller;
 
 import com.Ice.WarningSystem.bean.Picture;
+import com.Ice.WarningSystem.form.picture.InsertPicture;
 import com.Ice.WarningSystem.form.picture.SelectPicturePage;
 import com.Ice.WarningSystem.http.HttpResult;
 import com.Ice.WarningSystem.http.HttpStatus;
@@ -36,6 +37,21 @@ public class PictureController {
             }
         }catch (Exception e){
             return HttpResult.error(HttpStatus.SC_INTERNAL_SERVER_ERROR,"未知异常，请联系管理员",e);
+        }
+    }
+
+    @PostMapping("/insertPicture")
+    @ApiOperation(value = "新增添照片")
+    public HttpResult insertPicture(@RequestBody InsertPicture picture){
+        try {
+            boolean isSuccess=pictureService.insertPicture(picture);
+            if (isSuccess){
+                return HttpResult.ok("新增成功");
+            }else{
+                return HttpResult.error(HttpStatus.SC_INTERNAL_SERVER_ERROR,"添加失败");
+            }
+        }catch (Exception e){
+            return HttpResult.error(HttpStatus.SC_INTERNAL_SERVER_ERROR,"添加异常",e);
         }
     }
 }

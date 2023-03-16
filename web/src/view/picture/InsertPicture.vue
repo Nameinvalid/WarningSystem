@@ -8,15 +8,35 @@
             <el-input v-model="updatePhotoForm.photoName"></el-input>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item prop="remark" label="图片描述">
+            <el-input v-model="updatePhotoForm.remark"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+          <el-form-item prop="position" label-width="14.5vh" label="拍摄图片的地址">
+            <el-input v-model="updatePhotoForm.position"></el-input>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
           <el-form-item prop="picture" label="上传图片"></el-form-item>
           <el-upload
+              ref="photoRef"
               class="upload-demo"
               drag
-              action=""
+              :limit="1"
+              action="http://localhost:8080/upload/picture"
               multiple
+              :auto-upload="false"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove"
+              :before-upload="beforeAvatarUpload"
+              :on-success="handleAvatarSuccess"
+              :on-error="handleAvatarError"
           >
             <el-icon class="el-icon--upload"><upload-filled /></el-icon>
             <div class="el-upload__text">
@@ -24,17 +44,20 @@
             </div>
             <template #tip>
               <div class="el-upload__tip">
-                图片上传大小不能超过500M
+                图片上传大小不能超过2M
               </div>
             </template>
           </el-upload>
+          <el-dialog v-model="dialogVisible">
+            <img w-full :src="dialogImageUrl" alt="Preview Image" />
+          </el-dialog>
         </el-col>
       </el-row>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="danger" @click="onClose">取消</el-button>
-        <el-button type="primary" @click="onConfirm">确定</el-button>
+        <el-button type="primary" @click="onSubmitPicture">确定</el-button>
       </span>
     </template>
   </el-dialog>
@@ -44,6 +67,7 @@
 import useInstance from "../../hooks/useInstance.js";
 import {nextTick, reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
+import {insertPictureAPI} from "../../api/coreFuctionAPI/picture";
 const updateUserId=sessionStorage.getItem("loginUser")
 const { global } = useInstance()
 const dialog = reactive({
@@ -51,9 +75,48 @@ const dialog = reactive({
   title:'标题'
 })
 
+const dialogVisible = ref(false)
+const dialogImageUrl = ref('')
+
+let photoRef = ref()
+const handleRemove = (uploadFile, uploadFiles) => {
+  console.log(uploadFile, uploadFiles)
+}
+const handlePictureCardPreview = (uploadFile) => {
+  dialogImageUrl.value = uploadFile.url
+  dialogVisible.value = true
+}
+const onSubmitPicture = () => {
+  photoRef.value.submit()
+}
+const handleAvatarSuccess = (uploadFile) => {
+  if (uploadFile.code===200){
+    updatePhotoForm.url=uploadFile.data
+    onConfirm()
+  }else {
+    ElMessage.error(uploadFile.message)
+  }
+}
+const handleAvatarError = (uploadFile) => {
+  ElMessage.error("上传照片"+uploadFile.name+"失败")
+}
+
+const beforeAvatarUpload = (rawFile) => {
+  if (rawFile.type !== 'image/jpeg' && rawFile.type!=='image/png') {
+    ElMessage.error('照片的格式不是jpg或者png的格式！')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('文件大小不能找过2MB！')
+    return false
+  }
+  return true
+}
 const photoForm=ref()
 const updatePhotoForm =reactive({
   photoName:'',
+  remark:'',
+  position:'',
+  url:'',
   photoId:0,//判断是新增还是修改
   updateUserId:0,
 })
@@ -73,7 +136,7 @@ const show = async (row) => {
     })
   }else {
     ElMessage({
-      message:"新增角色",
+      message:"新增照片",
       type:'success'
     })
     dialog.title='新增'
@@ -87,9 +150,6 @@ const onShow = () => {
   dialog.visible=true
 }
 const onConfirm = () => {
-  updatePhotoForm.updateUserId=updateUserId
-  console.log("新增",updatePhotoForm.updateUserId)
-  onClose()
   //写需要提交给后台的属性，分清是修改还是新增
   photoForm.value?.validate(async (avid)=>{
     if (avid){
@@ -97,8 +157,7 @@ const onConfirm = () => {
       updatePhotoForm.updateUserId=updateUserId
       if (updatePhotoForm.photoId===0){
         //新增
-        //res=await insertMenuAPI(updateMenuForm)
-        console.log("新增",updatePhotoForm.updateUserId)
+        res= await insertPictureAPI(updatePhotoForm)
       }else {
         //修改
         //res= await updateMenuAPI(updateMenuForm)

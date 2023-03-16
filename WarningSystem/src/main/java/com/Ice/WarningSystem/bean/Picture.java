@@ -22,12 +22,12 @@ public class Picture {
     /**
      * 照片名称
      */
-    @TableField(value = "photoName")
+    @TableField(value = "photo_name")
     private String photoName;
     /**
      * 照片地址
      */
-    @TableField(value = "photoUrl")
+    @TableField(value = "photo_url")
     private String photoUrl;
     /**
      * 照片描述
