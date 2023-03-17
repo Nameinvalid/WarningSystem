@@ -58,19 +58,21 @@
       <el-container>
         <el-header>
           <el-row class="tac">
-            <el-icon style="font-size: 30px;" @click="() => { isCollapse = !isCollapse }">
+            <el-icon style="font-size: 30px;width: 4vh" @click="() => { isCollapse = !isCollapse }">
               <component :is="isCollapse ?  Expand:Fold"></component>
             </el-icon>
           </el-row>
-          <h1>{{ user.username }}</h1>
-          <el-tooltip class="box-item" effect="dark" placement="bottom">
-            <template #content>
-              <a href="#" class="exit" @click="exitLogin">退出登录</a>
-            </template>
-            <!--：src=显示本地图片的-->
-            <el-avatar size="large" :src="image" shape="circle" fit="fill">
-            </el-avatar>
-          </el-tooltip>
+          <div class="login">
+            <h1>{{ user.username }}</h1>
+            <el-tooltip class="box-item" effect="dark" placement="bottom">
+              <template #content>
+                <a href="#" class="exit" @click="exitLogin">退出登录</a>
+              </template>
+              <!--：src=显示本地图片的-->
+              <el-avatar size="large" :src="image" shape="circle" fit="fill" class="img">
+              </el-avatar>
+            </el-tooltip>
+          </div>
         </el-header>
         <el-breadcrumb separator="">
           <el-tabs
@@ -239,9 +241,19 @@ const removeTab = (targetName) => {
 .el-menu-vertical-demo{
   border-right: solid 1px #545c64;
 }
-h1 {
-  margin-left: 1300px;
-  margin-right: 20px;
+.login{
+  display: flex;
+  align-items: center;
+  width: 95%;
+  position: relative;
+}
+.img{
+  position: absolute;
+  right: 0;
+}
+h1{
+  position: absolute;
+  right: 7vh;
 }
 
 .exit {

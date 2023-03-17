@@ -12,7 +12,18 @@
     </el-form>
     <el-table :data="tableList.list" border stripe :height="tableHeight">
       <el-table-column prop="photoName" label="图片名称"></el-table-column>
-      <el-table-column prop="remark" label="角色描述"></el-table-column>
+      <el-table-column prop="photoUrl" label="图片">
+        <template #default="scope">
+          <el-image style="width: 50px; height: 50px" :src="scope.row.photoUrl"
+                    :preview-src-list="[scope.row.photoUrl]"
+                    :hide-on-click-modal="true" :preview-teleported="true">
+          </el-image>
+        </template>
+      </el-table-column>
+      <el-table-column prop="remark" label="图片描述"></el-table-column>
+      <el-table-column prop="position" label="拍摄图片的位置"></el-table-column>
+      <el-table-column prop="createTime" label="图片上传时间"></el-table-column>
+      <el-table-column prop="uploadUserName" label="图片上传人"></el-table-column>
       <el-table-column label="操作" align="center" width="220">
         <template #default="scope">
           <el-button type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)" >编辑
@@ -63,6 +74,7 @@ const deletePictureForm = reactive({
 //登录者id
 const updateUserId=sessionStorage.getItem("loginUser")
 const getPictureList = async (string) => {
+  //后端直接查到上传图片的人，到时候直接传过来
   let res=await selectPictureAPI(photoList)
   if (res && res.code===200){
     if (typeof string !== "undefined"){
