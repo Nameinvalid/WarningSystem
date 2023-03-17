@@ -7,10 +7,18 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="phone" jdbcType="BIGINT" property="phone"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="create_time" jdbcType="DATETIMEOFFSET" property="createTime"/>
+        <result column="update_time" jdbcType="DATETIMEOFFSET" property="updateTime"/>
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+        <result column="update_user_id" jdbcType="BIGINT" property="updateUserId"/>
     </resultMap>
-    <select id="findAll" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select *
-        from selectLogin
-        where username=#{username,jdbcType=VARCHAR}
+    <select id="findUsername" resultType="string">
+        select name
+        from user
+        where id=#{updateUserId,jdbcType=BIGINT}
     </select>
 </mapper>

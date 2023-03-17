@@ -2,7 +2,7 @@
   <el-main>
     <el-form :model="photoList" :inline="true" size="default">
       <el-form-item>
-        <el-input v-model="photoList.menuName" placeholder="请输入图片名称"></el-input>
+        <el-input v-model="photoList.photoName" placeholder="请输入图片名称"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="searchBtn" :icon="Search" >搜索</el-button>
@@ -22,8 +22,8 @@
       </el-table-column>
       <el-table-column prop="remark" label="图片描述"></el-table-column>
       <el-table-column prop="position" label="拍摄图片的位置"></el-table-column>
-      <el-table-column prop="createTime" label="图片上传时间"></el-table-column>
-      <el-table-column prop="uploadUserName" label="图片上传人"></el-table-column>
+      <el-table-column prop="updateTime" label="图片上传时间"></el-table-column>
+      <el-table-column prop="updateUserName" label="图片上传人"></el-table-column>
       <el-table-column label="操作" align="center" width="220">
         <template #default="scope">
           <el-button type="primary" :icon="Edit" size="default" @click="editBtn(scope.row)" >编辑

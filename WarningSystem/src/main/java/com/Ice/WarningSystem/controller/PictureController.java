@@ -6,6 +6,7 @@ import com.Ice.WarningSystem.form.picture.SelectPicturePage;
 import com.Ice.WarningSystem.http.HttpResult;
 import com.Ice.WarningSystem.http.HttpStatus;
 import com.Ice.WarningSystem.service.PictureService;
+import com.Ice.WarningSystem.vo.PictureVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,7 +30,7 @@ public class PictureController {
     @ApiOperation(value = "照片的分页查询")
     public HttpResult selectPicturePage(@RequestBody SelectPicturePage picturePage){
         try {
-            IPage<Picture> page=pictureService.selectPicturePage(picturePage);
+            IPage<PictureVO> page=pictureService.selectPicturePage(picturePage);
             if (page.getSize()==0){
                 return HttpResult.ok("无结果",page);
             }else {

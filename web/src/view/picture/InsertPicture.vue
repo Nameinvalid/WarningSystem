@@ -86,8 +86,16 @@ const handlePictureCardPreview = (uploadFile) => {
   dialogImageUrl.value = uploadFile.url
   dialogVisible.value = true
 }
+//检测修改时是否要上传文件
+//0是不需要上传文件，1是需要
+let uploadPhoto=ref(0)
 const onSubmitPicture = () => {
   photoRef.value.submit()
+  if (dialog.title==='修改'){
+    if (uploadPhoto.value===0){
+      onConfirm()
+    }
+  }
 }
 const handleAvatarSuccess = (uploadFile) => {
   if (uploadFile.code===200){
@@ -96,12 +104,17 @@ const handleAvatarSuccess = (uploadFile) => {
   }else {
     ElMessage.error(uploadFile.message)
   }
+  photoRef.value.clearFiles();
 }
 const handleAvatarError = (uploadFile) => {
   ElMessage.error("上传照片"+uploadFile.name+"失败")
 }
 
 const beforeAvatarUpload = (rawFile) => {
+  if (dialog.title==='修改'){
+    //说明需要上传文件，并且是修改窗口
+    uploadPhoto.value=1
+  }
   if (rawFile.type !== 'image/jpeg' && rawFile.type!=='image/png') {
     ElMessage.error('照片的格式不是jpg或者png的格式！')
     return false
@@ -143,6 +156,8 @@ const show = async (row) => {
   }
   photoForm.value?.resetFields()
   //由于表单中有几个数据消不掉，所以另外加上
+  updatePhotoForm.photoId=0
+  uploadPhoto.value=0
   onShow()
 }
 

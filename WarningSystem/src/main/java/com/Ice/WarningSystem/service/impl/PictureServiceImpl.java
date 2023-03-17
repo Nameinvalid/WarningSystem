@@ -4,8 +4,11 @@ import com.Ice.WarningSystem.bean.Picture;
 import com.Ice.WarningSystem.dao.PictureDao;
 import com.Ice.WarningSystem.form.picture.InsertPicture;
 import com.Ice.WarningSystem.form.picture.SelectPicturePage;
+import com.Ice.WarningSystem.mapper.UserMapper;
 import com.Ice.WarningSystem.service.PictureService;
 import com.Ice.WarningSystem.service.UploadService;
+import com.Ice.WarningSystem.util.ConversionUtil;
+import com.Ice.WarningSystem.vo.PictureVO;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -24,8 +27,11 @@ public class PictureServiceImpl implements PictureService {
     @Autowired
     UploadService uploadService;
 
+    @Resource
+    UserMapper userMapper;
+
     @Override
-    public IPage<Picture> selectPicturePage(SelectPicturePage picturePage) {
+    public IPage<PictureVO> selectPicturePage(SelectPicturePage picturePage) {
         Page<Picture> page=new Page<>(picturePage.getPageNum(), picturePage.getPageSize());
         LambdaUpdateWrapper<Picture> wrapper=new LambdaUpdateWrapper<>();
         if (StringUtils.isNotBlank(picturePage.getPhotoName())){
@@ -33,7 +39,21 @@ public class PictureServiceImpl implements PictureService {
         }
         wrapper.orderByAsc(Picture::getCreateTime);
         page=pictureDao.selectPage(page,wrapper);
-        return page;
+        IPage<PictureVO> pictureVOIPage= ConversionUtil.IpageTypeConversion(page,PictureVO.class);
+        pictureVOIPage.getRecords().forEach(pictureVO -> {
+            pictureVO.setUpdateUserName(selectUpdatePictureUser(pictureVO.getUpdateUserId()));
+        });
+        return pictureVOIPage;
+    }
+
+    /**
+     * 寻找修改图片人的名称/网络名称
+     * @param updateUserId
+     * @return
+     */
+    @Override
+    public String selectUpdatePictureUser(Long updateUserId) {
+        return userMapper.findUsername(updateUserId);
     }
 
     @Override
