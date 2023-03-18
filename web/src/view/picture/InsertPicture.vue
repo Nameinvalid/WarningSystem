@@ -68,6 +68,7 @@ import useInstance from "../../hooks/useInstance.js";
 import {nextTick, reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {insertPictureAPI} from "../../api/coreFuctionAPI/picture";
+import {updatePictureAPI} from "../../api/coreFuctionAPI/picture.js";
 const updateUserId=sessionStorage.getItem("loginUser")
 const { global } = useInstance()
 const dialog = reactive({
@@ -175,8 +176,7 @@ const onConfirm = () => {
         res= await insertPictureAPI(updatePhotoForm)
       }else {
         //修改
-        //res= await updateMenuAPI(updateMenuForm)
-        console.log("修改",updatePhotoForm.updateUserId)
+        res= await updatePictureAPI(updatePhotoForm)
       }
       if (res &&res.code===200){
         ElMessage.success(res.msg)

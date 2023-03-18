@@ -2,13 +2,16 @@ package com.Ice.WarningSystem.service.impl;
 
 import com.Ice.WarningSystem.bean.Picture;
 import com.Ice.WarningSystem.dao.PictureDao;
+import com.Ice.WarningSystem.form.picture.DeletePicture;
 import com.Ice.WarningSystem.form.picture.InsertPicture;
 import com.Ice.WarningSystem.form.picture.SelectPicturePage;
+import com.Ice.WarningSystem.form.picture.UpdatePicture;
 import com.Ice.WarningSystem.mapper.UserMapper;
 import com.Ice.WarningSystem.service.PictureService;
 import com.Ice.WarningSystem.service.UploadService;
 import com.Ice.WarningSystem.util.ConversionUtil;
 import com.Ice.WarningSystem.vo.PictureVO;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -78,5 +81,26 @@ public class PictureServiceImpl implements PictureService {
             int countId=pictureDao.update(null,wrapper);
             return countId==1;
         }
+    }
+
+    @Override
+    public boolean updatePicture(UpdatePicture updatePicture) {
+        Picture picture=new Picture();
+        picture.setPhotoName(updatePicture.getPhotoName());
+        picture.setRemark(updatePicture.getRemark());
+        picture.setPosition(updatePicture.getPosition());
+        picture.setPhotoUrl(updatePicture.getUrl());
+        picture.setUpdateTime(new Date());
+        picture.setUpdateUserId(updatePicture.getUpdateUserId());
+        LambdaUpdateWrapper<Picture> wrapper=new LambdaUpdateWrapper<>();
+        wrapper.eq(Picture::getId,updatePicture.getPhotoId());
+        int count=pictureDao.update(picture,wrapper);
+        return count==1;
+    }
+
+    @Override
+    public boolean deletePicture(DeletePicture deletePicture) {
+        int count=pictureDao.deleteById(deletePicture.getPhotoId());
+        return count==1;
     }
 }
