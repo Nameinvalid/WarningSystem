@@ -34,6 +34,21 @@
         </el-row>
         <el-row>
           <el-col :span="12" v-if="updateUserForm.type ===1">
+            <el-form-item prop="roleName" label="角色">
+              <el-select v-model="updateUserForm.roleName" filterable clearable placeholder="角色名称">
+                <el-option
+                    v-for="item in roleList.role"
+                    :key="item.id"
+                    :label="item.roleName"
+                    :value="item.roleName"
+                    @click="getRoleId(item.id)"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" v-if="updateUserForm.type ===1">
             <el-form-item prop="username" label="账户">
               <el-input v-model="updateUserForm.username"></el-input>
             </el-form-item>
@@ -58,7 +73,7 @@
 import {nextTick, reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import useInstance from "../../hooks/useInstance.js";
-import {insertUserApi, updateUserApi} from "../../api/user.js";
+import {insertUserApi, selectRoleAllAPI, updateUserApi} from "../../api/user.js";
 
 const { global } = useInstance()
 //所有的参数
@@ -67,6 +82,13 @@ const dialog = reactive({
   visible:false,
   title:'标题'
 })
+//所有的角色
+const roleList = reactive({
+  role:[]
+})
+const getRoleId = async (index) => {
+  updateUserForm.roleId=index;
+}
 //修改包装类
 const updateUserForm=reactive({
   username:'',
@@ -76,7 +98,9 @@ const updateUserForm=reactive({
   type:3,
   name:'',
   userId:0,//判断是新增还是修改
-  updateUserId:0
+  updateUserId:0,
+  roleName:'',
+  roleId:0
 })
 const updateUserId=sessionStorage.getItem("loginUser")
 //展示函数，将弹框展示出来
@@ -111,6 +135,10 @@ const onConfirm = () => {
 }
 //加载父组件传过来的参数，并把弹窗打开
 const show = async (row) => {
+  let res=await selectRoleAllAPI();
+  if (res && res.code===200){
+    roleList.role=res.data
+  }
   if (row){
     ElMessage({
       message:"对 "+row.name+" 账号进行修改",

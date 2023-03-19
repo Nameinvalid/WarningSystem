@@ -1,13 +1,14 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="250px">
+      <el-aside :width="isCollapse ? '60px':'250px'">
         <el-menu
             active-text-color="#ffd04b"
             background-color="#545c64"
             class="el-menu-vertical-demo"
             text-color="#fff"
             :collapse="isCollapse"
+            :collapse-transition="false"
         >
           <el-menu-item index="1">
             <img src="@/assets/vue.svg"/>
@@ -58,7 +59,7 @@
       <el-container>
         <el-header>
           <el-row class="tac">
-            <el-icon style="font-size: 30px;width: 4vh" @click="() => { isCollapse = !isCollapse }">
+            <el-icon style="font-size: 30px;" @click="() => { isCollapse = !isCollapse }">
               <component :is="isCollapse ?  Expand:Fold"></component>
             </el-icon>
           </el-row>
@@ -232,14 +233,17 @@ const removeTab = (targetName) => {
   text-align: center;
   line-height: 200px;
   width: fit-content;
+  transition: width 0.5s;
+  -webkit-transition: width 0.5s;
+  -moz-transition: width 0.5s;
+  -o-transition: width 0.5s;
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 250px;
   min-height: 400px;
-  border-right: solid 1px #545c64;
 }
 .el-menu-vertical-demo{
-  border-right: solid 1px #545c64;
+  border-right:0!important;
 }
 .login{
   display: flex;

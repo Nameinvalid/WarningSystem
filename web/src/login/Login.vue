@@ -1,4 +1,10 @@
 <template>
+  <div class="layout">
+    <div class="top">
+      <div class="text-image">
+        覆冰预警监视后台管理系统
+      </div>
+    </div>
     <div class="selectLogin-page">
       <el-card class="box-card">
         <div class="clearfix">
@@ -6,10 +12,16 @@
         </div>
         <div class="selectLogin-main">
           <el-form :model="loginForm" label-width="120px">
-            <el-form-item label="用户名">
+            <el-form-item>
+              <template #label>
+                <div style="color: white">用户名</div>
+              </template>
               <el-input v-model="loginForm.username" placeholder="请输入用户名" prefix-icon="UserFilled"/>
             </el-form-item>
-            <el-form-item label="密码">
+            <el-form-item>
+              <template #label>
+                <div style="color: white">密码</div>
+              </template>
               <el-input v-model="loginForm.password" placeholder="请输入密码" prefix-icon="key" show-password/>
             </el-form-item>
             <el-button type="primary" class="selectLogin-button" @click="selectLogin">登录</el-button>
@@ -18,7 +30,8 @@
         </div>
       </el-card>
     </div>
-  </template>
+  </div>
+</template>
 
 <script setup>
 import { reactive,onMounted } from 'vue';
@@ -67,15 +80,29 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.selectLogin-page{
-  background: url("https://img-qn.51miz.com/preview/element/00/01/27/03/E-1270347-B7853F8A.jpg") no-repeat;
-  background-size: cover;
+.top{
+  width: 100%;
+  height: 10vh;
+  background: url(../images/头部.png) no-repeat;
+}
+.text-image{
+  padding-top: 3vh;
+  color: white;
+  width: 100%;
   height: 100vh;
+  text-align: center;
+  z-index: 1;
+}
+.selectLogin-page{
+  background-size: cover;
+  height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
+.layout{
+  background: url(../images/背景图.png) no-repeat;
+}
 .selectLogin-title{
   padding-left: 5vh;
   text-align:center;
@@ -92,6 +119,9 @@ onMounted(() => {
   margin-left: 8vh;
 }
 .box-card {
+  color: white;
+  background-color: #015d86;
+  border: 3px solid #3590e7;
   width: 350px;
   z-index: 100;
 }

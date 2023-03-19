@@ -1,6 +1,8 @@
 package com.Ice.WarningSystem.service.impl;
 
+import com.Ice.WarningSystem.bean.Role;
 import com.Ice.WarningSystem.bean.User;
+import com.Ice.WarningSystem.dao.RoleDao;
 import com.Ice.WarningSystem.dao.UserDao;
 import com.Ice.WarningSystem.form.user.DeleteUserForm;
 import com.Ice.WarningSystem.form.user.InsertUserContent;
@@ -25,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     UserDao userDao;
+
+    @Resource
+    RoleDao roleDao;
 
 
     @Override
@@ -145,5 +150,12 @@ public class UserServiceImpl implements UserService {
         wrapper.orderByAsc(User::getCreateTime);
         page=userDao.selectPage(page,wrapper);
         return page;
+    }
+
+    @Override
+    public List<Role> findAllRole() {
+        LambdaQueryWrapper<Role> wrapper=new LambdaQueryWrapper<>();
+        wrapper.orderByAsc(Role::getCreateTime);
+        return roleDao.selectList(wrapper);
     }
 }

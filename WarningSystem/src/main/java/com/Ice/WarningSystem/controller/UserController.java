@@ -1,5 +1,6 @@
 package com.Ice.WarningSystem.controller;
 
+import com.Ice.WarningSystem.bean.Role;
 import com.Ice.WarningSystem.bean.User;
 import com.Ice.WarningSystem.enums.user.DeleteUserIsSuccess;
 import com.Ice.WarningSystem.enums.user.InsertUserIsSuccess;
@@ -21,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
  * @ClassName UserController
@@ -127,6 +129,17 @@ public class UserController {
             }
         }catch (Exception e){
             return HttpResult.error(HttpStatus.SC_INTERNAL_SERVER_ERROR,"未知异常，请联系管理员",e);
+        }
+    }
+
+    @GetMapping("/selectAllRole")
+    @ApiOperation(value = "角色的全量查询")
+    public HttpResult selectAllRole(){
+        try {
+            List<Role> list=userService.findAllRole();
+            return HttpResult.ok(list);
+        }catch (Exception e){
+            return HttpResult.error(HttpStatus.SC_EXPECTATION_FAILED,"未知异常，请联系管理员",e);
         }
     }
 }

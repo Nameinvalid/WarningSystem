@@ -5,7 +5,7 @@ import myconFirm from './util/myconfirm'
 //引入国际化
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css'
-
+//引入高德地图
 import * as ELIcons from '@element-plus/icons-vue'
 import App from './App.vue'
 
