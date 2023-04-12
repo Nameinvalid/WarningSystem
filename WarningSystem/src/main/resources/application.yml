@@ -22,6 +22,6 @@ mybatis-plus:
 qiniu:
   accessKey: jwve7fWAAWvq5Q-ycNvFKO35dr8tM3O0Hnon_rfJ
   secretKey: LX9K9n2iI9AHsI4x0Aln8UHe0Tqw_s4VovL23bza
-  bucketName: mywarningsystem
-  path: rrlur42f4.hn-bkt.clouddn.com
+  bucketName: mywarningpicture
+  path: rssnx288j.hn-bkt.clouddn.com
 

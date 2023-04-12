@@ -80,6 +80,19 @@ const routes=[
         path: '/Index',
         component:Layout,
         children: [{
+            path:'/iceThickness',
+            name:'iceThickness',
+            component: ()=>import ('@/view/icethickness/IceThickness.vue'),
+            meta:{
+                name:'覆冰厚度预警',
+                icon:'house'
+            }
+        }]
+    },
+    {
+        path: '/Index',
+        component:Layout,
+        children: [{
             path:'/warningLevel',
             name:'warningLevel',
             component: ()=>import ('@/view/warninglevel/WarningLevel.vue'),
@@ -108,9 +121,22 @@ const routes=[
         children: [{
             path:'/mapIceCity',
             name:'MapIceCity',
-            component: ()=>import ('@/view/mapicecity/MapIceCity.vue'),
+            component: ()=>import ('@/view/mapicecity/Map.vue'),
             meta:{
                 name:'城市覆冰分布图',
+                icon:'house'
+            }
+        }]
+    },
+    {
+        path: '/Index',
+        component:Layout,
+        children: [{
+            path:'/model',
+            name:'model',
+            component: ()=>import ('@/view/modeltest/Model.vue'),
+            meta:{
+                name:'模型管理',
                 icon:'house'
             }
         }]

@@ -46,13 +46,21 @@
             <el-icon><Odometer /></el-icon>
             <template #title>预警等级管理</template>
           </el-menu-item>
-          <el-menu-item index="6" @click="selectWeather('气象数据管理')">
+          <el-menu-item index="6" @click="selectIceThickness('覆冰厚度预警')">
+            <el-icon><Odometer /></el-icon>
+            <template #title>覆冰厚度预警</template>
+          </el-menu-item>
+          <el-menu-item index="7" @click="selectWeather('气象数据管理')">
             <el-icon><Drizzling /></el-icon>
             <template #title>气象数据管理</template>
           </el-menu-item>
-          <el-menu-item index="7" @click="selectMapIceCity('城市覆冰分布图')">
+          <el-menu-item index="8" @click="selectMapIceCity('城市覆冰分布图')">
             <el-icon><IceCream/></el-icon>
             <template #title>城市覆冰分布图</template>
+          </el-menu-item>
+          <el-menu-item index="9" @click="selectModel('模型管理')">
+            <el-icon><IceCream/></el-icon>
+            <template #title>模型管理</template>
           </el-menu-item>
         </el-menu>
       </el-aside>
@@ -146,6 +154,10 @@ const selectWarningLevel = async (targetName) => {
   router.push("/warningLevel")
   addTab(targetName)
 }
+const selectIceThickness = async (targetName) => {
+  router.push("/iceThickness")
+  addTab(targetName)
+}
 const selectWeather= async (targetName) => {
   router.push("/weather")
   addTab(targetName)
@@ -158,6 +170,10 @@ const selectMapIceCity = async (targetName) => {
 
 const selectIndex = async (targetName) => {
   router.push("/Index")
+  addTab(targetName)
+}
+const selectModel = async (targetName) => {
+  router.push("/model")
   addTab(targetName)
 }
 onMounted(() => {

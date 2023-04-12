@@ -14,10 +14,12 @@ module.exports = {
         "sourceType": "module"
     },
     "plugins": [
-        "vue"
+        "vue",
+        "jsdoc"
     ],
     "rules": {
         // 关闭名称校验
-        'vue/multi-word-component-names': "off"
+        'vue/multi-word-component-names': "off",
+        "jsdoc/no-undefined-types":1,
     }
 }
